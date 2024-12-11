@@ -1,0 +1,9 @@
+{% if item_list %}
+    <ul>
+    {% for item in item_list %}
+        <li><a href="{% url 'polls:detail' item.id %}">{{ item.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No items are available.</p>
+{% endif %}

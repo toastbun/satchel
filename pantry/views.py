@@ -1,14 +1,15 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
+from .models import *
 
 def index(request):
-    return HttpResponse("Hello, ugly.")
+    item_list = Item.objects.all()
+    context = {
+        "item_list": item_list,
+    }
+    return render(request, "pantry/index.html",context)
 
-def sup(request):
-    name = request.GET.get("name")
-    response = "guy"
 
-    if name != None:
-        response = name
-
-    return HttpResponse("Hi " + response + " : )")
+def detail(request, item_id):
+    item = get_object_or_404(Item, pk=item_id)
+    return render(request, "pantry/detail.html", {"item": item})
