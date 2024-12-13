@@ -2,3 +2,4 @@ env/
 
 # clutter
 **__pycache__**
+**.pyc
