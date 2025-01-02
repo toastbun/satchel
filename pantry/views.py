@@ -13,3 +13,6 @@ def index(request):
 def detail(request, item_id):
     item = get_object_or_404(Item, pk=item_id)
     return render(request, "pantry/detail.html", {"item": item})
+
+def newitem(request):
+    return render(request, "pantry/newitem.html")
