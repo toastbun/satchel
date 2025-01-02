@@ -3,11 +3,14 @@ from django.shortcuts import render, get_object_or_404
 from .models import *
 
 def index(request):
+    return render(request, "pantry/index.html")
+
+def allitems(request):
     item_list = Item.objects.all()
     context = {
         "item_list": item_list,
     }
-    return render(request, "pantry/index.html",context)
+    return render(request, "pantry/allitems.html",context)
 
 
 def detail(request, item_id):
