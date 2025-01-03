@@ -1,5 +1,5 @@
-<form action="items/add/">
-    <label> Item name: </label>
-    <input type="text">
+<form action= "{% url 'pantry:newitem' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
     <input type="submit" value="Add">
 </form>

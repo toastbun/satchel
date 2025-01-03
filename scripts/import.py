@@ -14,11 +14,3 @@ for i in items:
     Item.objects.create(
         name=i["name"]
     )
-#     new_item = Item(name=i.get("name"))
-#     new_item.save()
-
-# Item.objects.bulk_create(
-#     [
-#         Item(name=i.get("name")) for i in items
-#     ]
-# )
