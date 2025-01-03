@@ -22,10 +22,11 @@ def detail(request, item_id):
 
 def newitem(request):
     if request.method == "POST":
-        form = NewItem(request.POST)
+        form = NewItemForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect("/pantry/items")
+            item_new = form.save()
+        return HttpResponseRedirect("/pantry/items")
     else: 
-        form = NewItem()
+        form = NewItemForm()
     
     return render(request, "pantry/newitem.html", {"form": form})

@@ -1,4 +1,8 @@
 from django import forms
+from django.forms import ModelForm
+from .models import *
 
-class NewItem(forms.Form):
-    item_name = forms.CharField(label="Item name", max_length=512)
+class NewItemForm(ModelForm):
+    class Meta:
+        model = Item
+        fields = ["name"]
