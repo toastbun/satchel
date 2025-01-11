@@ -24,8 +24,8 @@ def newitem(request):
     if request.method == "POST":
         form = NewItemForm(request.POST)
         if form.is_valid():
-            item_new = form.save()
-        return HttpResponseRedirect("/pantry/items")
+            form.save()
+            return HttpResponseRedirect("/pantry/items")
     else: 
         form = NewItemForm()
     
