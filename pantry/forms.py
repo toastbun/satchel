@@ -6,3 +6,6 @@ class NewItemForm(ModelForm):
     class Meta:
         model = Item
         fields = ["name"]
+    
+    def clean_name(self):
+        return self.cleaned_data["name"].lower()

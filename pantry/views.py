@@ -21,11 +21,13 @@ def detail(request, item_id):
 
 
 def newitem(request):
+    # Item.objects.all().delete()
     if request.method == "POST":
         form = NewItemForm(request.POST)
         if form.is_valid():
             item_new = form.save()
-        return HttpResponseRedirect("/pantry/items")
+
+            return HttpResponseRedirect("/pantry/items")
     else: 
         form = NewItemForm()
     
