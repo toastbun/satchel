@@ -7,12 +7,12 @@ from .forms import *
 def index(request):
     return render(request, "pantry/index.html")
 
-def allitems(request):
+def all_items(request):
     item_list = Item.objects.all()
     context = {
         "item_list": item_list,
     }
-    return render(request, "pantry/allitems.html",context)
+    return render(request, "pantry/all_items.html",context)
 
 
 def detail(request, item_id):
@@ -20,8 +20,7 @@ def detail(request, item_id):
     return render(request, "pantry/detail.html", {"item": item})
 
 
-def newitem(request):
-    # Item.objects.all().delete()
+def new_item(request):
     if request.method == "POST":
         form = NewItemForm(request.POST)
         if form.is_valid():
@@ -30,4 +29,4 @@ def newitem(request):
     else: 
         form = NewItemForm()
     
-    return render(request, "pantry/newitem.html", {"form": form})
+    return render(request, "pantry/new_item.html", {"form": form})
