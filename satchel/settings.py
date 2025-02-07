@@ -25,12 +25,14 @@ SECRET_KEY = 'django-insecure-6(x-h*^zj5)ql$s)ae8ys+!6$k$77))_^s3x+9ckgnu24@*tga
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',  # top
+    'base.apps.BaseConfig',
     'pantry.apps.PantryConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # added
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'utils.context_processors.theme_context',
             ],
         },
     },
@@ -117,12 +121,38 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
-STATIC_URL = 'static/'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+"""
+    Make sure that each app/static/ directory includes a redundant app/ folder.
+
+    For example,
+
+    #   INCORRECT:  /app/static/css/main.css
+    #   CORRECT:    /app/static/app/css/main.css
+"""
+
+STATIC_URL = "static/"  # alias used when referencing files stored in the STATIC_ROOT
+
+STATIC_ROOT = BASE_DIR / "staticfiles"  # the folder into which static files are collected
+
+STATICFILES_DIRS = []  # we don't need to add anything to this right now
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Sessions
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

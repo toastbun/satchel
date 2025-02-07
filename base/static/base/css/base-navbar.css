@@ -1,0 +1,35 @@
+.navbar-brand .navbar-item {
+    padding: 0px;
+}
+
+.has-dropdown .navbar-dropdown {
+    width: 100%;
+}
+
+.navbar-logo {
+    width: 150px !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+.navbar-start > * {
+    min-width: 90px;
+}
+
+/* .navbar-menu, .is-active {
+    transition: all 1s ease-out;
+} */
+
+@media screen and (min-width: 1023px) {
+    .navbar-item-button {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .navbar-item-no-padding {
+        padding: 0px;
+    }
+}

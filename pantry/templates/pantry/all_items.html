@@ -1,6 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
 <div class="item-entry-section">
-    <input type="text" placeholder="New item" />
-    <input type="submit" value="Add" />
+    {% include 'pantry/new_item.html' %}
 </div>
 
 {% if item_list %}
@@ -12,3 +16,6 @@
 {% else %}
     <p>No items are available.</p>
 {% endif %}
+
+
+{% endblock %}

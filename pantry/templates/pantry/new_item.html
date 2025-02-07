@@ -1,5 +1,6 @@
 <form action= "{% url 'pantry:new_item' %}" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Add">
+    <input type="text" name="name" placeholder="New item" />
+    <input type="submit" value="Add" />
 </form>

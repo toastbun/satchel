@@ -1,5 +1,9 @@
 env/
 
+# django
+staticfiles/*
+
 # clutter
 **__pycache__**
 **.pyc
+.DS_Store

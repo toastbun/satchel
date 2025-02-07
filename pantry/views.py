@@ -8,11 +8,16 @@ def index(request):
     return render(request, "pantry/index.html")
 
 def all_items(request):
+    print(f"Made it to all_items.")
+    print(request.POST)
+
     item_list = Item.objects.all()
+
     context = {
         "item_list": item_list,
     }
-    return render(request, "pantry/all_items.html",context)
+
+    return render(request, "pantry/all_items.html", context)
 
 
 def detail(request, item_id):
@@ -21,12 +26,26 @@ def detail(request, item_id):
 
 
 def new_item(request):
-    if request.method == "POST":
-        form = NewItemForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/pantry/items")
-    else: 
-        form = NewItemForm()
-    
-    return render(request, "pantry/new_item.html", {"form": form})
+    if request.method != "POST":
+        return HttpResponseRedirect(redirect_to="/pantry/items")
+
+    print(f"\nIt's a POST.")
+    print(request.POST)
+    form = NewItemForm(request.POST)
+
+    if form.is_valid():
+        print(f"It's valid.")
+        form.save()
+
+        print(f"Redirecting to /items.")
+        return HttpResponseRedirect("/pantry/items")
+    else:
+        print(f"It ain't valid.")
+
+        return render(
+            request,
+            template_name="pantry/all_items.html",
+            context={
+                "form": form
+            }
+        )

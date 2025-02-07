@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="{% if dark_mode == False %}light{% else %}dark{% endif %}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{% block title %}{% endblock title %}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/bulma-overrides.css' %}">
+        {% block css %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/base-navbar.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/base-style.css' %}">
+    </head>
+
+    <body>
+    {% include 'fragments/navigation.html' %}
+
+    <div class="page-header">{% block page_header %}{% endblock page_header %}</div>
+
+    {% block content %}{% endblock content %}
+
+    <script src="{% static 'base/js/base-scripts.js' %}"></script>
+    {% block scripts %}{% endblock scripts %}
+    </body>
+</html>
