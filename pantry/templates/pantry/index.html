@@ -3,8 +3,17 @@
 
 {% block title %}pantry{% endblock %}
 
-{% block page_header %}Welcome to Pantry{% endblock page_header %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'pantry/css/pantry-styles.css' %}">
+{% endblock css %}
+
+{% block page_header %}Pantry{% endblock page_header %}
 
 {% block content %}
+{% block pantry_content %}
 
-{% endblock %}
+<div class="pantry-link-section unselectable">Ingredients</div>
+<div class="pantry-link-section bottom unselectable">Items</div>
+
+{% endblock pantry_content %}
+{% endblock content %}

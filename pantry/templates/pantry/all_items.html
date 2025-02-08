@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'pantry/index.html' %}
 {% load static %}
 
 {% block content %}
@@ -8,14 +8,13 @@
 </div>
 
 {% if item_list %}
-    <ul>
+    <div>
     {% for item in item_list %}
-        <li><a href="{% url 'pantry:detail' item.id %}">{{ item.name }}</a></li>
+        <div><a href="{% url 'pantry:detail' item.id %}">{{ item.name }}</a></div>
     {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>No items are available.</p>
 {% endif %}
-
 
 {% endblock %}

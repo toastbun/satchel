@@ -2,7 +2,7 @@
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <a class="navbar-item" href="{% url 'base:index' %}">
+        <a class="navbar-item unselectable" href="{% url 'base:index' %}">
             <img class="navbar-logo" src="{% if dark_mode == True %}{% static 'base/images/satchel-logo-dark.png' %}{% else %}{% static 'base/images/satchel-logo-light.png' %}{% endif %}" />
         </a>
 
@@ -18,13 +18,16 @@
     <div id="navbar-basic" class="navbar-menu">
         <div class="navbar-start">
             <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
+                <a class="navbar-link unselectable">
                     apps
                 </a>
 
-                <div class="navbar-dropdown">
-                    <a class="navbar-item{% if page_name == 'pantry' %} is-selected{% endif %}" href="{% url 'pantry:index' %}">
+                <div class="navbar-dropdown unselectable">
+                    <a class="navbar-item{% if page_name == 'pantry' %} is-selected{% endif %} unselectable" href="{% url 'pantry:index' %}">
                         pantry
+                    </a>
+                    <a class="navbar-item{% if page_name == 'meals' %} is-selected{% endif %} unselectable" href="/">
+                        meals
                     </a>
                     <!-- <a class="navbar-item is-selected">
                         Jobs
@@ -34,7 +37,7 @@
             </div>
 
             <a class="navbar-item navbar-item-no-padding" href="https://github.com/toastbun/satchel" target="_blank">
-                <div class="navbar-item-button">docs</div>
+                <div class="navbar-item-button unselectable">docs</div>
             </a>
         </div>
 

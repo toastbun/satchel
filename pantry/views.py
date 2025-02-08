@@ -11,9 +11,11 @@ def all_items(request):
     print(f"Made it to all_items.")
     print(request.POST)
 
+    ingredients_list = Ingredient.objects.all()
     item_list = Item.objects.all()
 
     context = {
+        "ingredients_list": ingredients_list,
         "item_list": item_list,
     }
 

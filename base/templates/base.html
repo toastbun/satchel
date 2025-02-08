@@ -11,13 +11,15 @@
         <link rel="stylesheet" type="text/css" href="{% static 'base/css/bulma-overrides.css' %}">
         {% block css %}{% endblock %}
         <link rel="stylesheet" type="text/css" href="{% static 'base/css/base-navbar.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'base/css/base-style.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/base-styles.css' %}">
     </head>
 
     <body>
     {% include 'fragments/navigation.html' %}
 
-    <div class="page-header">{% block page_header %}{% endblock page_header %}</div>
+    <div class="page-header">
+        <div class="page-header-text unselectable">{% block page_header %}{% endblock page_header %}</div>
+    </div>
 
     {% block content %}{% endblock content %}
 
