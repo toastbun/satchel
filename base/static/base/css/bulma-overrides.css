@@ -9,3 +9,12 @@
     padding-top: 0px;
     padding-bottom: 0px;
 }
+
+.navbar-item.is-selected {
+    background-color: hsl(0, 0%, 48%) !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+
+.form-label {
+    margin-bottom: 18px !important;
+}

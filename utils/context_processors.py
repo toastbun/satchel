@@ -1,4 +1,4 @@
 def theme_context(request):
     return {
-        "dark_mode": True
+        "dark_mode": False
     }

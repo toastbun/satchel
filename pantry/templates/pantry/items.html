@@ -1,0 +1,26 @@
+{% extends 'pantry/index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="item-entry-section">
+    {% include 'pantry/new_item_form.html' %}
+</div>
+
+{% if items_list %}
+    <div>
+    {% for item in items_list %}
+    <div>
+        <a href="{% url 'pantry:detail_item' item.id %}">{{ item }}</a>
+    </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <p>No items are available.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'pantry/js/pantry-items-scripts.js' %}"></script>
+{% endblock scripts %}

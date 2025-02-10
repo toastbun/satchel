@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,14 +33,15 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',  # top
-    'base.apps.BaseConfig',
-    'pantry.apps.PantryConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'base.apps.BaseConfig',
+    'pantry.apps.PantryConfig',
+    'bulma',  # added
 ]
 
 MIDDLEWARE = [
@@ -145,7 +147,14 @@ STATIC_URL = "static/"  # alias used when referencing files stored in the STATIC
 
 STATIC_ROOT = BASE_DIR / "staticfiles"  # the folder into which static files are collected
 
-STATICFILES_DIRS = []  # we don't need to add anything to this right now
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -5,7 +5,10 @@ from . import views
 app_name = "pantry"
 urlpatterns = [
     path("", views.index, name="index"),
-    path("items/", views.all_items, name="all_items"),
-    path("<int:item_id>/", views.detail, name="detail"),
-    path("items/new", views.new_item, name="new_item"),
+    path("ingredients/", views.ingredients, name="ingredients"),
+    path("ingredients/<int:ingredient_id>/", views.detail_ingredient, name="detail_ingredient"),
+    path("ingredients/delete", views.delete_ingredient, name="delete_ingredient"),
+
+    path("items/", views.items, name="items"),
+    path("items/<int:item_id>/", views.detail_item, name="detail_item"),
 ]

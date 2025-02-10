@@ -15,9 +15,32 @@ div {
     user-select: none;
 }
 
+.test {
+    color: red;
+}
+
 .page-header {
     display: flex;
     height: 10vh;
+    margin-bottom: 28px;
     align-items: center;
     justify-content: center;
+}
+
+.page-content {
+    padding: 0px 12%;
+}
+
+.section-divider {
+    margin-bottom: 30px;
+    margin-top: 30px;
+    border-bottom: 1px solid rgb(179, 179, 187);
+}
+
+.section-divider.no-bottom-margin {
+    margin-bottom: 0px !important;
+}
+
+.section-divider.no-top-margin {
+    margin-top: 0px !important;
 }

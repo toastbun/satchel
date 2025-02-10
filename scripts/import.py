@@ -3,14 +3,16 @@
 from data.ingredients import ingredients
 from data.items import items
 from data.locations import locations
+from data.packaging_types import packaging_types
 from pantry.enums import *
-from pantry.models import Ingredient, Item, Location
+from pantry.models import *
 
 
 # the order of this dictionary matters because some tables need to be created before others due to their field references.
 # for example, Location and Ingredient records need to exist by the time Item records reference them upon creation.
 data = {
     Location: locations,
+    PackagingType: packaging_types,
     Ingredient: ingredients,
     Item: items,
 }

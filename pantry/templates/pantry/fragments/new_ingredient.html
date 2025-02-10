@@ -1,0 +1,31 @@
+<form action="{% url 'pantry:new_item' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+
+    <!-- <div class="dropdown dropdown-ingredient-select">
+        <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                <span>Ingredient</span>
+                <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                </span>
+            </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+                {% for ingredient in ingredients_list %}
+                    <a href="#" class="dropdown-item">{{ ingredient }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div> -->
+
+    <label for="ingredients-dropdown">Ingredient</label>
+    <select name="ingredients" id="ingredients-dropdown">
+        {% for ingredient in ingredients_list %}
+        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="Add" />
+</form>

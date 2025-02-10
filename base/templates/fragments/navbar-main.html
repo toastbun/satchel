@@ -1,6 +1,6 @@
 {% load static %}
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar navbar-main" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item unselectable" href="{% url 'base:index' %}">
             <img class="navbar-logo" src="{% if dark_mode == True %}{% static 'base/images/satchel-logo-dark.png' %}{% else %}{% static 'base/images/satchel-logo-light.png' %}{% endif %}" />
@@ -19,9 +19,29 @@
         <div class="navbar-start">
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link unselectable">
-                    apps
+                    pantry
                 </a>
 
+                <div class="navbar-dropdown unselectable">
+                    <a class="navbar-item{% if page_name == 'ingredients' %} is-selected{% endif %} unselectable" href="{% url 'pantry:ingredients' %}">
+                        ingredients
+                    </a>
+                    <a class="navbar-item{% if page_name == 'items' %} is-selected{% endif %} unselectable" href="{% url 'pantry:items' %}">
+                        items
+                    </a>
+                    <!-- <a class="navbar-item is-selected">
+                        Jobs
+                    </a> -->
+                    <!-- <hr class="navbar-divider"> -->
+                </div>
+            </div>
+
+            <div class="navbar-item has-dropdown is-unselectable">
+                <a class="navbar-link unselectable">
+                    meals
+                </a>
+
+                {% comment %}
                 <div class="navbar-dropdown unselectable">
                     <a class="navbar-item{% if page_name == 'pantry' %} is-selected{% endif %} unselectable" href="{% url 'pantry:index' %}">
                         pantry
@@ -34,6 +54,8 @@
                     </a> -->
                     <!-- <hr class="navbar-divider"> -->
                 </div>
+                {% endcomment %}
+                
             </div>
 
             <a class="navbar-item navbar-item-no-padding" href="https://github.com/toastbun/satchel" target="_blank">

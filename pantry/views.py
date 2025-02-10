@@ -1,53 +1,88 @@
+import json
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from .models import *
-from .forms import *
+from django.urls import reverse
+
+from base.utils import ModelEncoder
+from pantry.models import *
+from pantry.forms import *
 
 
 def index(request):
-    return render(request, "pantry/index.html")
+    context = {"page_name": "pantry_index"}
 
-def all_items(request):
-    print(f"Made it to all_items.")
-    print(request.POST)
+    return render(request, "pantry/index.html", context)
 
-    ingredients_list = Ingredient.objects.all()
-    item_list = Item.objects.all()
 
+def ingredients(request):
     context = {
-        "ingredients_list": ingredients_list,
-        "item_list": item_list,
+        "page_name": "ingredients",
+        "ingredients_list": Ingredient.objects.all(),
+        "items_list": Item.objects.all(),
     }
 
-    return render(request, "pantry/all_items.html", context)
+    if request.POST:
+        form = NewIngredientForm(request.POST)
 
+        if form.is_valid():
+            form.save()
 
-def detail(request, item_id):
-    item = get_object_or_404(Item, pk=item_id)
-    return render(request, "pantry/detail.html", {"item": item})
-
-
-def new_item(request):
-    if request.method != "POST":
-        return HttpResponseRedirect(redirect_to="/pantry/items")
-
-    print(f"\nIt's a POST.")
-    print(request.POST)
-    form = NewItemForm(request.POST)
-
-    if form.is_valid():
-        print(f"It's valid.")
-        form.save()
-
-        print(f"Redirecting to /items.")
-        return HttpResponseRedirect("/pantry/items")
+            context["form"] = NewIngredientForm()
+        else:
+            context["form"] = form
+        
+        return HttpResponseRedirect(reverse("pantry:ingredients"))
     else:
-        print(f"It ain't valid.")
+        context["form"] = NewIngredientForm()
+    
+    return render(request, "pantry/ingredients.html", context)
 
-        return render(
-            request,
-            template_name="pantry/all_items.html",
-            context={
-                "form": form
-            }
-        )
+
+def detail_ingredient(request, ingredient_id):
+    ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
+
+    return render(request, "pantry/detail_ingredient.html", {"ingredient": ingredient})
+
+
+def delete_ingredient(request):
+    request_body = json.loads(request.body)
+
+    response = {"success": False}
+
+    record_id = request_body.get("record_id")
+
+    if not type(record_id) == str or not record_id.isnumeric():
+        error_message = f"views.delete_ingredient | Request body does not contain a valid record_id: {request_body}"
+        print(error_message)
+
+        response["message"] = error_message
+
+        return HttpResponse(json.dumps(response))
+    
+    Ingredient.objects.get(pk=int(record_id)).delete()
+
+    return HttpResponse(json.dumps(
+        {
+            "success": True,
+            "updated_records_list": [ModelEncoder().encode(ingredient) for ingredient in Ingredient.objects.all()]
+        }
+    ))
+
+
+def items(request):
+    ingredients_list = Ingredient.objects.all()
+    items_list = Item.objects.all()
+
+    context = {
+        "page_name": "items",
+        "ingredients_list": ingredients_list,
+        "items_list": items_list,
+    }
+
+    return render(request, "pantry/items.html", context)
+
+
+def detail_item(request, item_id):
+    item = get_object_or_404(Item, pk=item_id)
+
+    return render(request, "pantry/detail_item.html", {"item": item})

@@ -1,3 +1,7 @@
+.navbar {
+    border-bottom: 1px solid rgb(179, 179, 187);
+}
+
 .navbar-brand .navbar-item {
     padding: 0px;
 }
@@ -16,11 +20,8 @@
     min-width: 90px;
 }
 
-/* .navbar-menu, .is-active {
-    transition: all 1s ease-out;
-} */
 
-@media screen and (min-width: 1023px) {
+@media screen and (min-width: 1023px) {  /* for desktop screens */
     .navbar-item-button {
         width: 100%;
         height: 100%;

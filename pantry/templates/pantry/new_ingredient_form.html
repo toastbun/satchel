@@ -1,0 +1,30 @@
+{% load static %}
+
+<div class="form-container form-add-container">
+    <form class="form-add form-add-ingredient" action="{% url 'pantry:ingredients' %}" method="post">
+        {% csrf_token %}
+        <div class="field form-field is-horizontal">
+            <div class="control">
+                <input class="input" type="text" placeholder="Ingredient name">
+            </div>
+        </div>
+
+        <div class="field form-field is-horizontal">
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox">
+                    Temperature controlled
+                </label>
+            </div>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link">Submit</button>
+            </div>
+            <div class="control">
+              <button class="button is-light">Cancel</button>
+            </div>
+          </div>
+    </form>
+</div>

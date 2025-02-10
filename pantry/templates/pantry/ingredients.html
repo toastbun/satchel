@@ -1,0 +1,50 @@
+{% extends 'pantry/index.html' %}
+{% load static %}
+{% load bulma_tags %}
+
+{% block pantry_content %}
+
+<div class="ingredient-entry-section">
+    <div class="form-container form-add-container">
+        <div class="label form-label form-label">Add an ingredient</div>
+        <form action="{% url 'pantry:ingredients' %}" method="post">
+            {% csrf_token %}
+            {{ form|bulma }}
+            <div class="submit-button-container">
+                <input type="submit" class="button is-primary" value="Add" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="list-section list-ingredients-section" data-token="{{ csrf_token }}">
+    <div class="list-container list-ingredients-container">
+        <div class="label list-label list-label-ingredients">All ingredients</div>
+        {% if ingredients_list %}
+        {% for ingredient in ingredients_list %}
+        <div class="list-item-container"> 
+            <div class="list-item-cell list-item-name list-ingredients-item">
+                <a href="{% url 'pantry:detail_ingredient' ingredient.id %}">{{ ingredient }}</a>
+            </div>
+            <div class="list-item-cell list-item-icon">
+                {% if ingredient.temperature_controlled %}<i class="fa-solid fa-temperature-low"></i>{% endif %}
+            </div>
+            <div class="list-item-cell list-item-delete list-ingredients-item-delete {% if dark_mode == False %}light{% else %}dark{% endif %}" data-id="{{ ingredient.id }}">
+                <button class="delete"></button>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="notice list-notice">There are no ingredients in the database.</div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock pantry_content %}
+
+{% block pantry_scripts %}
+<script src="{% static 'pantry/js/pantry-scripts.js' %}"></script>
+<script src="{% static 'pantry/js/pantry-ingredients-scripts.js' %}"></script>
+{% endblock pantry_scripts %}

@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>{% block title %}{% endblock title %}</title>
+        <script src="https://kit.fontawesome.com/d651e0fb71.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
         <link rel="stylesheet" type="text/css" href="{% static 'base/css/bulma-overrides.css' %}">
         {% block css %}{% endblock %}
@@ -15,13 +16,15 @@
     </head>
 
     <body>
-    {% include 'fragments/navigation.html' %}
+    {% include 'fragments/navbar-main.html' %}
 
     <div class="page-header">
         <div class="page-header-text unselectable">{% block page_header %}{% endblock page_header %}</div>
     </div>
 
-    {% block content %}{% endblock content %}
+    <div class="page-content">
+        {% block content %}{% endblock content %}
+    </div>
 
     <script src="{% static 'base/js/base-scripts.js' %}"></script>
     {% block scripts %}{% endblock scripts %}

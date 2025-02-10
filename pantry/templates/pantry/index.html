@@ -7,13 +7,28 @@
 <link rel="stylesheet" type="text/css" href="{% static 'pantry/css/pantry-styles.css' %}">
 {% endblock css %}
 
-{% block page_header %}Pantry{% endblock page_header %}
+{% block page_header %}Pantry - kitchen inventory{% endblock page_header %}
 
 {% block content %}
-{% block pantry_content %}
 
-<div class="pantry-link-section unselectable">Ingredients</div>
-<div class="pantry-link-section bottom unselectable">Items</div>
+{% if page_name == "pantry_index" %}
 
-{% endblock pantry_content %}
+<a href="{% url 'pantry:ingredients' %}">
+    <div class="pantry-link-section pantry-ingredients-link unselectable">Ingredients</div>
+</a>
+
+<div class="section-divider no-bottom-margin no-top-margin"></div>
+
+<a href="{% url 'pantry:items' %}">
+    <div class="pantry-link-section pantry-ingredients-link bottom unselectable">Items</div>
+</a>
+
+{% endif %}
+
+{% block pantry_content %}{% endblock pantry_content %}
+
 {% endblock content %}
+
+{% block scripts %}
+    {% block pantry_scripts %}{% endblock pantry_scripts %}
+{% endblock scripts %}
