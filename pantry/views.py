@@ -30,6 +30,8 @@ def ingredients(request):
             context["form"] = NewIngredientForm()
         else:
             context["form"] = form
+
+            return HttpResponseRedirect(reverse("pantry:ingredients"))
         
         return HttpResponseRedirect(reverse("pantry:ingredients"))
     else:
