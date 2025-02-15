@@ -27,10 +27,6 @@ div {
     justify-content: center;
 }
 
-.page-content {
-    padding: 0px 12%;
-}
-
 .section-divider {
     margin-bottom: 30px;
     margin-top: 30px;
@@ -43,4 +39,23 @@ div {
 
 .section-divider.no-top-margin {
     margin-top: 0px !important;
+}
+
+.submit-button-container {
+    margin-top: 22px;
+}
+
+
+/* .notification-full-page {
+    z-index: 200;
+    position: absolute;
+    top: 20vh;
+    width: 50%;
+} */
+
+
+@media screen and (min-width: 1023px) {  /* for desktop screens */
+    .page-content {
+        padding: 0px 12%;
+    }
 }

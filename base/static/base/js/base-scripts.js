@@ -15,6 +15,34 @@ document.addEventListener("DOMContentLoaded", (event) => {
             $target.classList.toggle('is-active')
         })
     })
+
+    /**
+     * 
+     * add modal functionality
+     * 
+     */
+    function openModal(modal) {
+        modal.classList.add("is-active")
+    }
+
+    function closeModal(modal) {
+        modal.classList.remove("is-active")
+    }
+
+    function closeAllModals() {
+        for (let modal of (document.querySelectorAll(".modal") || [])) {
+            closeModal(modal)
+        }
+    }
+
+    for (let trigger of (document.querySelectorAll(".js-modal-trigger") || [])) {
+        const modal = trigger.dataset.target
+        const target = document.getElementById(modal)
+
+        trigger.addEventListener("click", () => {
+            openModal(target)
+        })
+    }
 })
 
 window.addEventListener("load", (event) => {

@@ -1,26 +1,94 @@
 {% extends 'pantry/index.html' %}
 {% load static %}
+{% load bulma_tags %}
 
-{% block content %}
+{% block pantry_content %}
 
-<div class="item-entry-section">
-    {% include 'pantry/new_item_form.html' %}
+<div class="list-entry-section item-entry-section">
+    <div class="form-container form-add-container">
+        <div class="label form-label form-label">Add a food item</div>
+        {% if ingredients_list %}
+        <form action="{% url 'pantry:items' %}" method="post">
+            {% csrf_token %}
+            {{ form|bulma }}
+            <div class="submit-button-container">
+                <input type="submit" class="button is-primary" value="Add" />
+            </div>
+        </form>
+        {% else %}
+        <div class="notice list-notice">
+            <a href="{% url 'pantry:ingredients' %}">Create an ingredient</a> to start creating food items.
+        </div>
+        {% endif %}
+    </div>
 </div>
 
-{% if items_list %}
-    <div>
-    {% for item in items_list %}
-    <div>
-        <a href="{% url 'pantry:detail_item' item.id %}">{{ item }}</a>
-    </div>
-    {% endfor %}
-    </div>
-{% else %}
-    <p>No items are available.</p>
-{% endif %}
+<div class="section-divider"></div>
 
-{% endblock %}
+<div class="list-section list-items-section">
+    <div class="list-container list-ingredients-container">
+        <div class="label list-label list-label-ingredients">All food items</div>
+        {% if items_list %}
+        <table class="table list-table list-items-table">
+            <thead>
+                <tr>
+                    <th><abbr title="Ingredient">Ingredient</abbr></th>
+                    <th><abbr title="Packaging Type">Pkg. Type</abbr></th>
+                    <th><abbr title="Location">Location</abbr></th>
+                    <th><abbr title="Date Expires">Expy. Date</abbr></th>
 
-{% block scripts %}
+                    <!-- <th><abbr title="Played">Pld</abbr></th>
+                    <th><abbr title="Won">W</abbr></th>
+                    <th><abbr title="Drawn">D</abbr></th>
+                    <th><abbr title="Lost">L</abbr></th>
+                    <th><abbr title="Goals for">GF</abbr></th>
+                    <th><abbr title="Goals against">GA</abbr></th>
+                    <th><abbr title="Goal difference">GD</abbr></th>
+                    <th><abbr title="Points">Pts</abbr></th>
+                    <th>Qualification or relegation</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items_list %}
+                <tr>
+                    {% comment %}<th>{{ item.id }}</th>{% endcomment %}
+                    <td><a href="{% url 'pantry:show_ingredient' item.ingredient.id %}">{{ item }}</a></td>
+                    <td>{{ item.packaging_type.name }}</td>
+                    <td>{{ item.location.name }}</td>
+                    <td>{{ item.date_expires }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="notice list-notice">There are no food items in the database.</div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- <div class="list-section list-items-section" data-token="{{ csrf_token }}">
+    <div class="list-container list-items-container">
+        <div class="label list-label list-label-items">All food items</div>
+        {% if items_list %}
+        {% for item in items_list %}
+        <div class="list-item-container"> 
+            <div class="list-item-cell list-item-name list-items-item">
+                <a href="{% url 'pantry:show_item' item.id %}">{{ item }}</a>
+            </div>
+            <div class="list-item-cell list-item-delete list-items-item-delete {% if dark_mode == False %}light{% else %}dark{% endif %}" data-id="{{ item.id }}">
+                <button class="delete"></button>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="notice list-notice">There are no food items in the database.</div>
+        {% endif %}
+    </div>
+</div> -->
+
+{% endblock pantry_content %}
+
+{% block pantry_scripts %}
+<script src="{% static 'pantry/js/pantry-scripts.js' %}"></script>
 <script src="{% static 'pantry/js/pantry-items-scripts.js' %}"></script>
-{% endblock scripts %}
+{% endblock pantry_scripts %}

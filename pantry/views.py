@@ -36,14 +36,14 @@ def ingredients(request):
         return HttpResponseRedirect(reverse("pantry:ingredients"))
     else:
         context["form"] = NewIngredientForm()
-    
+
     return render(request, "pantry/ingredients.html", context)
 
 
-def detail_ingredient(request, ingredient_id):
+def show_ingredient(request, ingredient_id):
     ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
 
-    return render(request, "pantry/detail_ingredient.html", {"ingredient": ingredient})
+    return render(request, "pantry/show_ingredient.html", {"ingredient": ingredient})
 
 
 def delete_ingredient(request):
@@ -72,19 +72,32 @@ def delete_ingredient(request):
 
 
 def items(request):
-    ingredients_list = Ingredient.objects.all()
-    items_list = Item.objects.all()
-
     context = {
-        "page_name": "items",
-        "ingredients_list": ingredients_list,
-        "items_list": items_list,
+        "page_name": "food_items",
+        "ingredients_list": Ingredient.objects.all(),
+        "items_list": Item.objects.all(),
     }
 
+    if request.POST:
+        form = NewItemForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            context["form"] = NewItemForm()
+        else:
+            context["form"] = form
+
+            return HttpResponseRedirect(reverse("pantry:items"))
+        
+        return HttpResponseRedirect(reverse("pantry:items"))
+    else:
+        context["form"] = NewItemForm()
+    
     return render(request, "pantry/items.html", context)
 
 
-def detail_item(request, item_id):
+def show_item(request, item_id):
     item = get_object_or_404(Item, pk=item_id)
 
-    return render(request, "pantry/detail_item.html", {"item": item})
+    return render(request, "pantry/show_item.html", {"item": item})

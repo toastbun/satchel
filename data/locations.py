@@ -1,22 +1,18 @@
 locations = [
     {
-        "name": "fridge",
+        "name": "basement",
+        "room": "basement"
+    }, {
+        "name": "cabinet",
         "room": "kitchen"
-    },
-    {
+    }, {
         "name": "freezer",
         "room": "kitchen"
-    },
-    {
-        "name": "counter",
+    }, {
+        "name": "fridge",
         "room": "kitchen"
-    },
-    {
-        "name": "spice cupboard",
-        "room": "kitchen"
-    },
-    {
-        "name": "snack cupboard",
+    }, {
+        "name": "kitchen",
         "room": "kitchen"
     }
 ]

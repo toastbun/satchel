@@ -4,7 +4,7 @@
 
 {% block pantry_content %}
 
-<div class="ingredient-entry-section">
+<div class="list-entry-section ingredient-entry-section">
     <div class="form-container form-add-container">
         <div class="label form-label form-label">Add an ingredient</div>
         <form action="{% url 'pantry:ingredients' %}" method="post">
@@ -26,11 +26,15 @@
         {% for ingredient in ingredients_list %}
         <div class="list-item-container"> 
             <div class="list-item-cell list-item-name list-ingredients-item">
-                <a href="{% url 'pantry:detail_ingredient' ingredient.id %}">{{ ingredient }}</a>
+                <a href="{% url 'pantry:show_ingredient' ingredient.id %}">{{ ingredient }}</a>
             </div>
+
+            {% comment %}
             <div class="list-item-cell list-item-icon">
                 {% if ingredient.temperature_controlled %}<i class="fa-solid fa-temperature-low"></i>{% endif %}
             </div>
+            {% endcomment %}
+
             <div class="list-item-cell list-item-delete list-ingredients-item-delete {% if dark_mode == False %}light{% else %}dark{% endif %}" data-id="{{ ingredient.id }}">
                 <button class="delete"></button>
             </div>
@@ -39,6 +43,22 @@
         {% else %}
         <div class="notice list-notice">There are no ingredients in the database.</div>
         {% endif %}
+    </div>
+</div>
+
+<div class="modal modal-confirm-delete">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Are you sure?</p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <footer class="modal-card-foot">
+            <div class="buttons">
+                <button class="button is-danger">Delete</button>
+                <button class="button">Cancel</button>
+            </div>
+        </footer>
     </div>
 </div>
 

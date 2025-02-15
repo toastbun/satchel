@@ -2,7 +2,7 @@
     padding: 15px 12px;
 }
 
-.ingredient-entry-section {
+.list-entry-section {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -24,7 +24,7 @@
     width: 100%;
 }
 
-.list-ingredients-section {
+.list-section {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -70,9 +70,21 @@
     padding-left: 12px;
 }
 
+select, .select {
+    width: 100%;
+}
+
+.list-table {
+    width: 100%;
+}
+
+.control {
+    display: block;
+}
+
 @media screen and (min-width: 1023px) {  /* for desktop screens */
     .form-container, .list-container {
-        width: 40%;
+        width: 60%;
     }
 
     .list-item, .notice {

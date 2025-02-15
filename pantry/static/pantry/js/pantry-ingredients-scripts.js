@@ -3,6 +3,10 @@ for (let deleteButton of document.querySelectorAll(".list-item-delete")) {
 }
 
 async function deleteButtonClickHandler(e) {
+    deleteConfirmButtonClickHandler(e)
+}
+
+async function deleteConfirmButtonClickHandler(e) {
     const recordElement = e.target.closest(".list-item-delete")
     const recordId = recordElement.dataset.id
 

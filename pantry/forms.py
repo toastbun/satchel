@@ -19,8 +19,7 @@ class NewIngredientForm(forms.ModelForm):
         # add placeholder text to text inputs
         self.fields["name"].widget.attrs.update({"placeholder": "Ingredient name"})
 
-        # change input types
-        self.fields["temperature_controlled"].widget.attrs.update({"type": "checkbox"})
+        # auto-focus name field when page loads
         self.fields["name"].widget.attrs.update({"autofocus": "", "onfocus": "this.select()"})
 
     def clean_name(self):
@@ -30,7 +29,6 @@ class NewIngredientForm(forms.ModelForm):
         model = Ingredient
         fields = [
             "name",
-            "temperature_controlled"
         ]
         labels = {
             "name": None,
@@ -38,14 +36,17 @@ class NewIngredientForm(forms.ModelForm):
 
 
 class NewItemForm(forms.ModelForm):
-    template_name = "form_snippet.html"
+
+    def __init__(self, *args, **kwargs):
+        super(NewItemForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Item
         fields = [
             "ingredient",
+            "packaging_type",
             "location",
-            "date_expires"
+            "date_expires",
         ]
         widgets = {
             "date_expires": DateInput()
