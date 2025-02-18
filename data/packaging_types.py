@@ -5,8 +5,8 @@ packaging_types = [
     {"name": "bundle"},
     {"name": "can"},
     {"name": "canister"},
+    {"name": "individual"},
     {"name": "jar"},
-    {"name": "loose"},
     {"name": "package"},
     {"name": "packet"},
 ]

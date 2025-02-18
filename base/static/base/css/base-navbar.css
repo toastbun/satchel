@@ -20,6 +20,25 @@
     min-width: 90px;
 }
 
+.navbar-item-min-width {
+    min-width: 80px;
+}
+
+.theme-toggle {
+    display: flex;
+    /* align-items: center; */
+    margin: 10px 0px;
+}
+
+.theme-toggle.desktop-invisible {
+    justify-content: center;
+}
+
+.theme-toggle > button {
+    font-size: 0.7em;
+    margin-right: 20px;
+}
+
 
 @media screen and (min-width: 1023px) {  /* for desktop screens */
     .navbar-item-button {

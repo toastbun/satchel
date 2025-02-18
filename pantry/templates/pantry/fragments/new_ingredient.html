@@ -23,7 +23,7 @@
     <label for="ingredients-dropdown">Ingredient</label>
     <select name="ingredients" id="ingredients-dropdown">
         {% for ingredient in ingredients_list %}
-        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+        <option value="{{ ingredient.id }}">{{ ingredient.substitute_key }}</option>
         {% endfor %}
     </select>
 

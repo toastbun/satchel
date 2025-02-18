@@ -17,8 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from base.views import *
+
 urlpatterns = [
     path("", include("base.urls")),
     path("pantry/", include("pantry.urls")),
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("switch_theme", switch_theme, name="switch_theme")
 ]

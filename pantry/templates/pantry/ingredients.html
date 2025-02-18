@@ -10,6 +10,20 @@
         <form action="{% url 'pantry:ingredients' %}" method="post">
             {% csrf_token %}
             {{ form|bulma }}
+            {% if ingredients_list %}
+            <div class="dropdown text-input-dropdown" id="food_substitute-dropdown">
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content dropdown-max-height">
+                        {% for ingredient in ingredients_list %}
+                        <div class="dropdown-item">
+                           hey {{ ingredient }}
+                        </div>
+                        {% comment %}<hr class="dropdown-divider" />{% endcomment %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             <div class="submit-button-container">
                 <input type="submit" class="button is-primary" value="Add" />
             </div>
@@ -24,7 +38,7 @@
         <div class="label list-label list-label-ingredients">All ingredients</div>
         {% if ingredients_list %}
         {% for ingredient in ingredients_list %}
-        <div class="list-item-container"> 
+        <div class="list-item-container">
             <div class="list-item-cell list-item-name list-ingredients-item">
                 <a href="{% url 'pantry:show_ingredient' ingredient.id %}">{{ ingredient }}</a>
             </div>
@@ -35,7 +49,8 @@
             </div>
             {% endcomment %}
 
-            <div class="list-item-cell list-item-delete list-ingredients-item-delete {% if dark_mode == False %}light{% else %}dark{% endif %}" data-id="{{ ingredient.id }}">
+            <div class="list-item-cell list-item-delete list-ingredients-item-delete {% if dark_mode == True %}dark{% else %}light{% endif %}"
+                data-id="{{ ingredient.id }}">
                 <button class="delete"></button>
             </div>
         </div>

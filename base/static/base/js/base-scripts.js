@@ -43,8 +43,31 @@ document.addEventListener("DOMContentLoaded", (event) => {
             openModal(target)
         })
     }
+
+    for (let themeToggleButton of document.querySelectorAll(".theme-toggle")) {
+        themeToggleButton.addEventListener("click", themeToggleButtonClickHandler)
+    }
 })
+
+async function themeToggleButtonClickHandler(e) {
+    const url = "/switch_theme"
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": document.querySelector("[data-token]").dataset.token
+        }
+    })
+
+    location.reload(true)
+}
 
 window.addEventListener("load", (event) => {
     console.log("Page is fully loaded.");
-});
+})
+
+
+const theme = document.querySelector("[data-theme]").dataset.theme
+
+const HOVER_COLOR = theme == "light" ? "hsl(0, 0%, 96%)" : "hsl(0, 0%, 21%)"

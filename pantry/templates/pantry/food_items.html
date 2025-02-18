@@ -8,7 +8,7 @@
     <div class="form-container form-add-container">
         <div class="label form-label form-label">Add a food item</div>
         {% if ingredients_list %}
-        <form action="{% url 'pantry:items' %}" method="post">
+        <form action="{% url 'pantry:food_items' %}" method="post">
             {% csrf_token %}
             {{ form|bulma }}
             <div class="submit-button-container">
@@ -28,7 +28,7 @@
 <div class="list-section list-items-section">
     <div class="list-container list-ingredients-container">
         <div class="label list-label list-label-ingredients">All food items</div>
-        {% if items_list %}
+        {% if food_items_list %}
         <table class="table list-table list-items-table">
             <thead>
                 <tr>
@@ -49,13 +49,13 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in items_list %}
+                {% for food_item in food_items_list %}
                 <tr>
-                    {% comment %}<th>{{ item.id }}</th>{% endcomment %}
-                    <td><a href="{% url 'pantry:show_ingredient' item.ingredient.id %}">{{ item }}</a></td>
-                    <td>{{ item.packaging_type.name }}</td>
-                    <td>{{ item.location.name }}</td>
-                    <td>{{ item.date_expires }}</td>
+                    {% comment %}<th>{{ food_item.id }}</th>{% endcomment %}
+                    <td><a href="{% url 'pantry:show_ingredient' food_item.ingredient.id %}">{{ item }}</a></td>
+                    <td>{{ food_item.packaging_type.name }}</td>
+                    <td>{{ food_item.location.name }}</td>
+                    <td>{{ food_item.date_expires }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -69,13 +69,13 @@
 <!-- <div class="list-section list-items-section" data-token="{{ csrf_token }}">
     <div class="list-container list-items-container">
         <div class="label list-label list-label-items">All food items</div>
-        {% if items_list %}
-        {% for item in items_list %}
+        {% if food_items_list %}
+        {% for food_item in food_items_list %}
         <div class="list-item-container"> 
             <div class="list-item-cell list-item-name list-items-item">
-                <a href="{% url 'pantry:show_item' item.id %}">{{ item }}</a>
+                <a href="{% url 'pantry:show_food_item' food_item.id %}">{{ item }}</a>
             </div>
-            <div class="list-item-cell list-item-delete list-items-item-delete {% if dark_mode == False %}light{% else %}dark{% endif %}" data-id="{{ item.id }}">
+            <div class="list-item-cell list-item-delete list-items-item-delete {% if dark_mode == False %}light{% else %}dark{% endif %}" data-id="{{ food_item.id }}">
                 <button class="delete"></button>
             </div>
         </div>

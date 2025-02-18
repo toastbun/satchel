@@ -82,6 +82,10 @@ select, .select {
     display: block;
 }
 
+.dropdown-item:hover {
+    background-color: var(--has-background-primary-light);
+}
+
 @media screen and (min-width: 1023px) {  /* for desktop screens */
     .form-container, .list-container {
         width: 60%;

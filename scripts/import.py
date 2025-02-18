@@ -1,11 +1,28 @@
 #! /usr/bin/env
 
+import os
+import sys
+
+
+ROOT_PATH = os.getcwd()
+
+
+# reset database
+os.system("dropdb satcheldb")
+os.system("createdb satcheldb")
+os.system(f"rm {ROOT_PATH}/pantry/migrations/00*.py")
+os.system("python3 manage.py makemigrations")
+os.system("python3 manage.py migrate")
+
+
 from data.ingredients import ingredients
-from data.items import items
+from data.food_items import food_items
+from data.food_substitutes import food_substitutes
 from data.locations import locations
 from data.packaging_types import packaging_types
 from pantry.enums import *
 from pantry.models import *
+
 
 
 # the order of this dictionary matters because some tables need to be created before others due to their field references.
@@ -13,8 +30,9 @@ from pantry.models import *
 data = {
     Location: locations,
     PackagingType: packaging_types,
+    FoodSubstitute: food_substitutes,
     Ingredient: ingredients,
-    Item: items,
+    FoodItem: food_items,
 }
 
 [model.objects.all().delete() for model in data]

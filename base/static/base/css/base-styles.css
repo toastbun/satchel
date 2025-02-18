@@ -53,9 +53,42 @@ div {
     width: 50%;
 } */
 
+.mobile-invisible {
+    display: none;
+}
+
+.desktop-invisible {
+    display: flex;
+}
+
+.display-flex {
+    display: flex;
+}
+
+.hover-select-light:hover {
+    background-color: "hsl(0, 0%, 96%)";
+}
+
+.hover-select-dark:hover {
+    background-color: "hsl(0, 0%, 21%)";
+}
+
+.dropdown-max-height {
+    max-height: 30vh;
+    overflow: scroll;
+}
+
 
 @media screen and (min-width: 1023px) {  /* for desktop screens */
     .page-content {
         padding: 0px 12%;
+    }
+
+    .mobile-invisible {
+        display: flex;
+    }
+
+    .desktop-invisible {
+        display: none;
     }
 }

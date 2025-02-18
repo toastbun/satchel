@@ -5,7 +5,6 @@
         <a class="navbar-item unselectable" href="{% url 'base:index' %}">
             <img class="navbar-logo" src="{% if dark_mode == True %}{% static 'base/images/satchel-logo-dark.png' %}{% else %}{% static 'base/images/satchel-logo-light.png' %}{% endif %}" />
         </a>
-
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-basic">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -16,7 +15,6 @@
     </div>
 
     <div id="navbar-basic" class="navbar-menu">
-        <div class="navbar-start">
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link unselectable">
                     pantry
@@ -26,7 +24,7 @@
                     <a class="navbar-item{% if page_name == 'ingredients' %} is-selected{% endif %} unselectable" href="{% url 'pantry:ingredients' %}">
                         ingredients
                     </a>
-                    <a class="navbar-item{% if page_name == 'food_items' %} is-selected{% endif %} unselectable" href="{% url 'pantry:items' %}">
+                    <a class="navbar-item{% if page_name == 'food_items' %} is-selected{% endif %} unselectable" href="{% url 'pantry:food_items' %}">
                         food items
                     </a>
                 </div>
@@ -39,21 +37,21 @@
             </div>
 
             <a class="navbar-item navbar-item-no-padding" href="https://github.com/toastbun/satchel" target="_blank">
-                <div class="navbar-item-button unselectable">docs</div>
+                <div class="navbar-item-min-width navbar-item-button unselectable">docs</div>
             </a>
-        </div>
 
-        <!-- <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                        Log in
-                    </a>
+            <div class="navbar-item navbar-item-no-padding hover-select-{% if dark_mode == True %}dark{% else %}light{% endif %}">
+                <div class="navbar-item-button unselectable">
+                    <div class="theme-toggle desktop-invisible" data-token="{{ csrf_token }}">
+                        <button class="button is-rounded">{% if dark_mode == True %}<i class="fa-regular fa-sun"></i>{% else %}<i class="fa-solid fa-moon"></i>{% endif %}</button>
+                    </div>
                 </div>
             </div>
-        </div> -->
+
+        <div class="navbar-end">
+            <div class="theme-toggle mobile-invisible" data-token="{{ csrf_token }}">
+                <button class="button is-rounded">{% if dark_mode == True %}<i class="fa-regular fa-sun"></i>{% else %}<i class="fa-solid fa-moon"></i>{% endif %}</button>
+            </div>
+        </div>
     </div>
 </nav>
