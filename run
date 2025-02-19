@@ -1,4 +1,20 @@
-#! /usr/bin/env bash
+#! /bin/bash
 
-python3 manage.py collectstatic --noinput
-python3 manage.py runserver 8001
+#####
+#
+# serve the satchel application to port 8001
+# run upon system boot as per /etc/systemd/system/multi-user.target.wants/satchel.service
+# alternatively, stop satchel.service and run manually
+#
+# oh uh, if you're looking here to figure out how to make another service, here you go
+# https://roboticsbackend.com/make-a-raspberry-pi-3-program-start-on-boot/
+#####
+
+cd /home/davidmaness/development/home/satchel/
+
+source /home/davidmaness/development/home/satchel/env/bin/activate
+source /home/davidmaness/development/home/satchel/.env
+
+echo yes | ./manage.py collectstatic
+
+uvicorn satchel.asgi:application --host 0.0.0.0 --port 8001

@@ -7,6 +7,14 @@ env/*
 # django
 staticfiles/*
 
+# server scripts
+activate
+entry.sh
+restart
+run
+start
+stop
+
 # clutter
 **__pycache__**
 **.pyc
