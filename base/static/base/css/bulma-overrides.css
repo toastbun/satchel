@@ -10,6 +10,10 @@
     padding-bottom: 0px;
 }
 
+.navbar-item > .navbar-item-button, .navbar-item > .navbar-link {
+    width: 100%;
+}
+
 .navbar-item.is-selected {
     background-color: hsl(0, 0%, 48%) !important;
     color: hsl(0, 0%, 96%) !important;
@@ -18,4 +22,15 @@
 .form-label {
     text-align: center;
     margin-bottom: 28px !important;
+}
+
+
+@media screen and (min-width: 1023px) {  /* for desktop screens */
+    .navbar-item {
+        width: 140px;
+    }
+
+    .navbar-item > .navbar-link {
+        padding: .5rem .75rem .5rem 2rem;
+    }
 }
