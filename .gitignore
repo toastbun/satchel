@@ -9,9 +9,11 @@ staticfiles/*
 
 # server scripts
 activate
-entry.sh
+entry
+pull
 restart
 run
+run_server
 start
 status
 stop
