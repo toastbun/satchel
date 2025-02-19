@@ -86,7 +86,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("SATCHEL_DB_PASSWORD"),
         "HOST": "127.0.0.1",
         "PORT": "5432",
-    }
+   }
 }
 
 
