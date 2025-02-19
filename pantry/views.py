@@ -35,9 +35,9 @@ def ingredients(request):
     context = {
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "ingredients",
-        "food_substitutes_list": FoodSubstitute.objects.all(),
         "food_items_list": FoodItem.objects.all(),
-        "ingredients_list": Ingredient.objects.all(),
+        "food_substitutes_list": FoodSubstitute.objects.all(),
+        "ingredients_list": Ingredient.objects.all().order_by("name"),
     }
 
     return render(request, "pantry/ingredients.html", context)
@@ -47,9 +47,9 @@ def add_ingredient(request):
     context = {
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "add_ingredient",
-        "ingredients_list": Ingredient.objects.all(),
         "food_substitutes_list": FoodSubstitute.objects.all(),
         "food_items_list": FoodItem.objects.all(),
+        "ingredients_list": Ingredient.objects.all().order_by("name"),
     }
 
     if request.POST:
@@ -112,9 +112,9 @@ def food_items(request):
     context = {
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "food_items",
-        "ingredients_list": Ingredient.objects.all(),
         "food_items_list": FoodItem.objects.all(),
-        "packaging_types_exist": PackagingType.objects.count()
+        "ingredients_list": Ingredient.objects.all().order_by("name"),
+        "packaging_types_exist": PackagingType.objects.count(),
     }
 
     if request.POST:
@@ -141,8 +141,8 @@ def add_food_item(request):
     context = {
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "add_food_item",
-        "ingredients_list": Ingredient.objects.all(),
         "food_items_list": FoodItem.objects.all(),
+        "ingredients_list": Ingredient.objects.all().order_by("name"),
     }
 
     if request.POST:
