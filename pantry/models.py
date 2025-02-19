@@ -73,3 +73,8 @@ class FoodItem(models.Model):
 
 class GroceryListItem(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name="ingredient_grocery_list_items")
+
+
+class IngredientTag(models.Model):
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name="ingredient_tags")
+    tag = models.CharField(max_length=64, null=False)

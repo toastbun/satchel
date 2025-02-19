@@ -10,15 +10,6 @@ class DateInput(forms.DateInput):
     input_type = "date"
 
 class NewIngredientForm(forms.ModelForm):
-    class Meta:
-        model = Ingredient
-        fields = ["name", "grocery_type", "substitute_key"]
-        widgets = {
-            "name": forms.TextInput(),
-            "grocery_type": forms.Select(),
-            "substitute_key": forms.Select()
-        }
-    
     def __init__(self, *args, **kwargs):
         super(NewIngredientForm, self).__init__(*args, **kwargs)
 
@@ -29,31 +20,25 @@ class NewIngredientForm(forms.ModelForm):
         self.fields["substitute_key"].label = "Substitute category"  # remove input label
         self.fields["substitute_key"].required = False
 
-
-class NewIngredientFormBkp(forms.ModelForm):
     class Meta:
         model = Ingredient
-        fields = ["name", "substitute_key"]
+        fields = ["name", "grocery_type", "substitute_key"]
         widgets = {
             "name": forms.TextInput(),
-            "substitute_key": forms.TextInput(),
+            "grocery_type": forms.Select(),
+            "substitute_key": forms.Select()
         }
-
-    def __init__(self, *args, **kwargs):
-        super(NewIngredientForm, self).__init__(*args, **kwargs)
-
-        self.fields["name"].label = ""  # remove input label
-        self.fields["name"].widget.attrs.update({"placeholder": "Ingredient name"})  # add placeholder text to text input
-        self.fields["name"].widget.attrs.update({"autofocus": "", "onfocus": "this.select()"})  # auto-focus text field when page loads
-    
-        self.fields["substitute_key"].label = ""  # remove input label
-        self.fields["substitute_key"].widget.attrs.update({"placeholder": "Substitute key"})  # add placeholder text to text input
-        self.fields["substitute_key"].widget.attrs.update({"class": "autocomplete"})  # make text input autocomplete
 
 
 class NewFoodItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(NewFoodItemForm, self).__init__(*args, **kwargs)
+
+        self.fields["ingredient"].label = ""
+        self.fields["ingredient"].widget.attrs.update({"placeholder": "Ingredient name"})
+        self.fields["ingredient"].widget.attrs.update({"autofocus": "", "onfocus": "this.select()"})
+
+        self.fields["packaging_type"].required = False
 
     class Meta:
         model = FoodItem
@@ -61,8 +46,11 @@ class NewFoodItemForm(forms.ModelForm):
             "ingredient",
             "packaging_type",
             "location",
+            "multi_use",
+            "quantity",
             "date_expires",
         ]
         widgets = {
+            "ingredient": forms.TextInput(),
             "date_expires": DateInput()
         }

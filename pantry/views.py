@@ -52,10 +52,10 @@ def ingredients(request):
 
             return render(request, "pantry/ingredients.html", context)
         else:
-            return HttpResponseRedirect(f"""/pantry/ingredients?food_substitute={request.POST.get("food_substitute")}""")
+            return HttpResponseRedirect(f"""/pantry/ingredients?ingredient_name={request.POST.get("ingredient_name")}""")
     else:
-        if food_substitute := request.GET.get("food_substitute"):
-            context["form"] = NewIngredientForm({"food_substitute": food_substitute})
+        if ingredient_name := request.GET.get("ingredient_name"):
+            context["form"] = NewIngredientForm({"name": ingredient_name})
         else:
             context["form"] = NewIngredientForm()
 
@@ -107,6 +107,7 @@ def food_items(request):
     }
 
     if request.POST:
+        print(request.POST)
         form = NewFoodItemForm(request.POST)
 
         if form.is_valid():
