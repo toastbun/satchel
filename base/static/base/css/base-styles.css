@@ -1,3 +1,7 @@
+.test {
+    border: 1px dotted red;
+}
+
 html {
     box-sizing: border-box;
 }
@@ -13,10 +17,6 @@ div {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-.test {
-    color: red;
 }
 
 .page-header {
@@ -65,17 +65,17 @@ div {
     display: flex;
 }
 
-.hover-select-light:hover {
+/* .hover-select-light {
     background-color: "hsl(0, 0%, 96%)";
 }
 
-.hover-select-dark:hover {
+.hover-select-dark {
     background-color: "hsl(0, 0%, 21%)";
 }
 
 .dropdown-item:hover {
     background-color: var(--has-background-primary-light);
-}
+} */
 
 .text-input-dropdown {
     display: flex;
@@ -86,10 +86,105 @@ div {
     overflow: scroll;
 }
 
+.list-entry-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.form-container, .list-container {
+    width: 100%;
+}
+
+.submit-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.list-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.list-item-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-item-cell {
+    width: 100%;
+    display: flex;
+    padding: 10px 12px;
+    align-items: center;
+}
+
+.list-item-name {
+    justify-content: flex-start;
+}
+
+.list-item-icon {
+    justify-content: flex-start;
+}
+
+.list-item-delete {
+    flex-grow: 1;
+    width: 20%;
+    justify-content: center;
+}
+
+.list-item-delete:hover {
+    cursor: pointer;
+    background-color: hsl(348, 100%, 61%);
+    transition-property: background-color;
+    transition-duration: var(--bulma-duration);
+}
+
+.list-item-name, .notice, .form-field {
+    padding-left: 12px;
+}
+
+select, .select {
+    width: 100%;
+}
+
+.list-table {
+    width: 100%;
+}
+
+.table-cell-centered {
+    text-align: center;
+}
+
+.control {
+    display: block;
+}
+
+.page-content {
+    /* padding: 0px 12%; */
+    /* border: 1px dotted red; */
+}
+
 
 @media screen and (min-width: 1023px) {  /* for desktop screens */
+    /** keep anything from directly touching the screen edge. **/
     .page-content {
-        padding: 0px 12%;
+        padding: 0px 2%;
+        display: flex;
+        justify-content: center;
+    }
+
+    /** most things will be a small distance from the screen edge. **/
+    .page-section {
+        width: 90%;
     }
 
     .mobile-invisible {
@@ -98,5 +193,13 @@ div {
 
     .desktop-invisible {
         display: none;
+    }
+
+    .form-container, .list-container {
+        width: 40%;
+    }
+
+    .list-item, .notice {
+        text-align: left;
     }
 }

@@ -4,73 +4,31 @@
 
 {% block pantry_content %}
 
-<div class="list-entry-section item-entry-section">
-    <div class="form-container form-add-container">
-        <div class="label form-label form-label">Add a food item</div>
-        {% if ingredients_list %}
-        <form action="{% url 'pantry:food_items' %}" method="post">
-            {% csrf_token %}
-            {{ form|bulma }}
-            {% if ingredients_list %}
-            <div class="dropdown text-input-dropdown" id="ingredient-dropdown">
-                <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                    <div class="dropdown-content dropdown-max-height">
-                        {% for ingredient in ingredients_list %}
-                        <div class="dropdown-item">
-                           {{ ingredient }}
-                        </div>
-                        {% comment %}<hr class="dropdown-divider" />{% endcomment %}
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            {% endif %}
-            <div class="submit-button-container">
-                <input type="submit" class="button is-primary" value="Add" />
-            </div>
-        </form>
-        {% else %}
-        <div class="notice list-notice">
-            <a href="{% url 'pantry:ingredients' %}">Create an ingredient</a> to start creating food items.
-        </div>
-        {% endif %}
-    </div>
-</div>
-
-<div class="section-divider"></div>
-
-<div class="list-section list-items-section">
+<div class="page-section list-section list-items-section">
     <div class="list-container list-ingredients-container">
-        <div class="label list-label list-label-ingredients">All food items</div>
+        <div class="label list-label list-label-ingredients">All food items<a href="{% url 'pantry:add_food_item' %}">Add</a></div>
         {% if food_items_list %}
         <table class="table list-table list-items-table">
             <thead>
                 <tr>
                     <th><abbr title="Ingredient">Ingredient</abbr></th>
-                    <th><abbr title="Packaging Type">Pkg. Type</abbr></th>
+                    {% if packaging_types_exist %}<th><abbr title="Packaging Type">Pkg. Type</abbr></th>{% endif %}
                     <th><abbr title="Location">Location</abbr></th>
+                    <th><abbr title="Multi-use"><div class="table-cell-centered">Multi-use</div></abbr></th>
                     <th><abbr title="Date Expires">Expy. Date</abbr></th>
-
-                    <!-- <th><abbr title="Played">Pld</abbr></th>
-                    <th><abbr title="Won">W</abbr></th>
-                    <th><abbr title="Drawn">D</abbr></th>
-                    <th><abbr title="Lost">L</abbr></th>
-                    <th><abbr title="Goals for">GF</abbr></th>
-                    <th><abbr title="Goals against">GA</abbr></th>
-                    <th><abbr title="Goal difference">GD</abbr></th>
-                    <th><abbr title="Points">Pts</abbr></th>
-                    <th>Qualification or relegation</th> -->
                 </tr>
             </thead>
             <tbody>
                 {% for food_item in food_items_list %}
-                <tr>
-                    {% comment %}<th>{{ food_item.id }}</th>{% endcomment %}
-                    <td><a href="{% url 'pantry:show_ingredient' food_item.ingredient.id %}">{{ item }}</a></td>
-                    <td>{{ food_item.packaging_type.name }}</td>
-                    <td>{{ food_item.location.name }}</td>
-                    <td>{{ food_item.date_expires }}</td>
-                </tr>
+                    {% comment %}{% if food_item.quantity > 0 %}{% endcomment %}
+                    <tr>
+                        <td><a href="{% url 'pantry:show_ingredient' food_item.ingredient.id %}">{{ food_item }}</a></td>
+                        {% if packaging_types_exist %}<td>{{ food_item.packaging_type.name }}</td>{% endif %}
+                        <td>{{ food_item.location.name }}</td>
+                        <td ><div class="table-cell-centered">{% if food_item.multi_use %}Yes{% else %}No{% endif %}</div></td>
+                        <td>{{ food_item.date_expires }}</td>
+                    </tr>
+                    {% comment %}{% endif %}{% endcomment %}
                 {% endfor %}
             </tbody>
         </table>
@@ -79,26 +37,6 @@
         {% endif %}
     </div>
 </div>
-
-<!-- <div class="list-section list-items-section" data-token="{{ csrf_token }}">
-    <div class="list-container list-items-container">
-        <div class="label list-label list-label-items">All food items</div>
-        {% if food_items_list %}
-        {% for food_item in food_items_list %}
-        <div class="list-item-container"> 
-            <div class="list-item-cell list-item-name list-items-item">
-                <a href="{% url 'pantry:show_food_item' food_item.id %}">{{ item }}</a>
-            </div>
-            <div class="list-item-cell list-item-delete list-items-item-delete {% if dark_mode == False %}light{% else %}dark{% endif %}" data-id="{{ food_item.id }}">
-                <button class="delete"></button>
-            </div>
-        </div>
-        {% endfor %}
-        {% else %}
-        <div class="notice list-notice">There are no food items in the database.</div>
-        {% endif %}
-    </div>
-</div> -->
 
 {% endblock pantry_content %}
 

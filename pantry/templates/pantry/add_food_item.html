@@ -1,0 +1,45 @@
+{% extends 'pantry/index.html' %}
+{% load static %}
+{% load bulma_tags %}
+
+{% block pantry_content %}
+
+<div class="page-section list-entry-section item-entry-section">
+    <div class="form-container form-add-container">
+        <div class="label form-label form-label">Add a food item<a href="{% url 'pantry:food_items' %}">View all</a></div>
+        {% if ingredients_list %}
+        <form action="{% url 'pantry:add_food_item' %}" method="post">
+            {% csrf_token %}
+            {{ form|bulma }}
+            {% if ingredients_list %}
+            <div class="dropdown text-input-dropdown" id="ingredient-dropdown">
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content dropdown-max-height">
+                        {% for ingredient in ingredients_list %}
+                        <div class="dropdown-item">
+                           {{ ingredient }}
+                        </div>
+                        {% comment %}<hr class="dropdown-divider" />{% endcomment %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="submit-button-container">
+                <input type="submit" class="button is-primary" value="Add" />
+            </div>
+        </form>
+        {% else %}
+        <div class="notice list-notice">
+            <a href="{% url 'pantry:ingredients' %}">Create an ingredient</a> to start creating food items.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock pantry_content %}
+
+{% block pantry_scripts %}
+<script src="{% static 'pantry/js/pantry-scripts.js' %}"></script>
+<script src="{% static 'pantry/js/pantry-items-scripts.js' %}"></script>
+{% endblock pantry_scripts %}

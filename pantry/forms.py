@@ -17,6 +17,8 @@ class NewIngredientForm(forms.ModelForm):
         self.fields["name"].widget.attrs.update({"placeholder": "Ingredient name"})
         self.fields["name"].widget.attrs.update({"autofocus": "", "onfocus": "this.select()"})
 
+        self.fields["grocery_type"].required = False
+
         self.fields["substitute_key"].label = "Substitute category"  # remove input label
         self.fields["substitute_key"].required = False
 
@@ -34,17 +36,37 @@ class NewFoodItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(NewFoodItemForm, self).__init__(*args, **kwargs)
 
+        self.locations_exist = Location.objects.count()
+        self.packaging_types_exist = PackagingType.objects.count()
+
         self.fields["ingredient"].label = ""
         self.fields["ingredient"].widget.attrs.update({"placeholder": "Ingredient name"})
         self.fields["ingredient"].widget.attrs.update({"autofocus": "", "onfocus": "this.select()"})
+        self.fields["ingredient"].widget.attrs["class"] = "autocomplete"
 
-        self.fields["packaging_type"].required = False
+        if self.packaging_types_exist:
+            self.fields.append("packaging_type")
+            self.fields["packaging_type"].required = False
+    
+    def clean_ingredient(self):
+        print(f"\nEntered clean_ingredient.\n")
+        ingredient_selection = self.cleaned_data["ingredient"]
+
+        try:
+            return Ingredient.objects.get(name=ingredient_selection)
+        except Exception as e:
+            raise forms.ValidationError("Ingredient does not exist.")
+
+    def clean_date_expires(self):
+        print(f"\nEntered clean_date_expires.")
+        date_expires = self.cleaned_data["date_expires"]
+
+        return date_expires
 
     class Meta:
         model = FoodItem
         fields = [
             "ingredient",
-            "packaging_type",
             "location",
             "multi_use",
             "quantity",

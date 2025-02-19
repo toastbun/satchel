@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from pantry.enums import *
 
@@ -53,7 +54,7 @@ class FoodItem(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name="ingredient_items")
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, related_name="location_items", null=True)
     packaging_type = models.ForeignKey(PackagingType, on_delete=models.SET_NULL, related_name="packaging_type_items", null=True)
-    multi_use = models.BooleanField(default=False)
+    multi_use = models.BooleanField(default=False, choices=((True, "Yes"), (False, "No")))
     amount_left = models.CharField(max_length=64, null=True, default=AmountsLeft.HIGH, choices=AmountsLeft.choices)
     quantity = models.PositiveSmallIntegerField(default=1)
     date_expires = models.DateField(null=True)
