@@ -14,5 +14,142 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     for (let textInputFieldWithAutocomplete of document.querySelectorAll(".autocomplete")) {
         textInputFieldWithAutocomplete.addEventListener("input", autocompleteTextInputUpdateHandler)
+        textInputFieldWithAutocomplete.addEventListener("keydown", autocompleteTextInputScrollHandler)
     }
 })
+
+
+/**
+ * 
+ * functions
+ * 
+ **/
+
+function getCsrfTokenFromForm(formElement) {
+    return formElement.closest("form").querySelector("[name='csrfmiddlewaretoken']").value
+}
+
+
+function getAssociatedDropdown(formElement) {
+    return formElement.closest("form").querySelector(`#${formElement.name}-dropdown`)
+}
+
+async function autocompleteTextInputUpdateHandler(event) {
+    const csrfToken = getCsrfTokenFromForm(event.target)
+    const ingredientNames = await queryIngredientNames(event.target.value, csrfToken)
+    const dropdown = getAssociatedDropdown(event.target)
+
+    if (!(dropdown.classList.contains("is-active"))) {
+        dropdown.classList.add("is-active")
+    } else {
+        if (event.target.value == "") {
+            dropdown.classList.remove("is-active")
+        }
+    }
+
+    const dropdownContent = dropdown.querySelector(".dropdown-content")
+
+    dropdownContent.replaceChildren()
+
+    if (ingredientNames.data.length) {
+        for (let ingredientName of ingredientNames.data) {
+            const newSelectElement = document.createElement("div")
+            const newSelectElementText = document.createTextNode(ingredientName)
+    
+            newSelectElement.classList.add("dropdown-item", "unselectable")
+            newSelectElement.appendChild(newSelectElementText)
+
+            dropdownContent.appendChild(newSelectElement)
+        }
+    } else {
+        dropdown.classList.remove("is-active")
+    }
+
+    for (let dropdownItem of document.querySelectorAll(".dropdown-item")) {
+        dropdownItem.addEventListener("mouseover", elementHoverHandler)
+        dropdownItem.addEventListener("mouseout", elementHoverHandler)
+        // dropdownItem.addEventListener("mouseover", function(e) {
+        //     e.target.style.backgroundColor = HOVER_COLOR
+        // })
+
+        // dropdownItem.addEventListener("mouseout", function(e) {
+        //     e.target.style.backgroundColor = ""
+        // })
+
+        dropdownItem.addEventListener("click", function(e) {
+            const selectedText = e.target.textContent
+            const parentDropdown = e.target.closest(".dropdown")
+            const textInputName = parentDropdown.id.replace("-dropdown", "")
+
+            const associatedTextInput = e.target.closest("form").querySelector(`input[name="${textInputName}"]`)
+
+            associatedTextInput.value = selectedText
+            associatedTextInput.select()
+            associatedTextInput.setSelectionRange(selectedText.length, selectedText.length)
+
+            parentDropdown.classList.remove("is-active")
+        })
+    }
+}
+
+
+async function autocompleteTextInputScrollHandler(event) {
+    if (!([38, 40].includes(event.keyCode))) {
+        return  // exit if key is not up or down arrow
+    }
+
+    const dropdown = event.target.closest("form").querySelector(".dropdown.text-input-dropdown")
+    
+    if (!(dropdown.classList.contains("is-active"))) {
+        return
+    }
+
+    const selectElements = dropdown.querySelectorAll(".dropdown-item")
+
+    console.log(dropdown)
+    console.log(selectElements)
+}
+
+
+async function queryIngredientNames(searchTerm, csrftoken=null) {
+    const url = `/pantry/ingredients/search`
+
+    const response = {}
+
+    if (csrftoken == null) {
+        response.message = "queryIngredientNames | Please provide a csrftoken."
+        console.log(response.message)
+
+        return response
+    }
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            },
+            body: JSON.stringify({
+                search_term: searchTerm
+            })
+        })
+    
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`)
+        }
+  
+        const json = await response.json()
+
+        response.success = true
+        response.data = json
+
+        return response
+
+    } catch (error) {
+        response.message = error.message
+        console.error(error.message)
+
+        return response
+    }
+}

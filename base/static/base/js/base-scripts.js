@@ -70,4 +70,19 @@ window.addEventListener("load", (event) => {
 
 const theme = document.querySelector("[data-theme]").dataset.theme
 
+
+/** hover effects **/
+
 const HOVER_COLOR = theme == "light" ? "hsl(0, 0%, 96%)" : "hsl(0, 0%, 21%)"
+
+function toggleElementBackgroundOnHover(element, isHovering, defaultBackgroundColor = "") {
+    element.style.backgroundColor = isHovering ? HOVER_COLOR : defaultBackgroundColor
+}
+
+function elementHoverHandler(event) {
+    if (!["mouseover", "mouseout"].includes(event.type)) {
+        return
+    }
+
+    toggleElementBackgroundOnHover(event.target.closest(".list-item-container"), event.type == "mouseover")
+}

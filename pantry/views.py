@@ -18,12 +18,12 @@ def index(request):
     return render(request, "pantry/index.html", context)
 
 
-def search_food_substitutes(request):
+def search_ingredient_names(request):
     if request.method == "POST":
         request_body = json.loads(request.body)
         search_term = request_body.get("search_term")
 
-        queryset_results = FoodSubstitute.objects.filter(name__startswith=search_term.lower())
+        queryset_results = Ingredient.objects.filter(name__startswith=search_term.lower())
         response_data = [i.name for i in queryset_results]
 
         return HttpResponse(json.dumps(response_data))
@@ -35,14 +35,24 @@ def ingredients(request):
     context = {
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "ingredients",
+        "food_substitutes_list": FoodSubstitute.objects.all(),
+        "food_items_list": FoodItem.objects.all(),
+        "ingredients_list": Ingredient.objects.all(),
+    }
+
+    return render(request, "pantry/ingredients.html", context)
+
+
+def add_ingredient(request):
+    context = {
+        "dark_mode": request.session.get("theme") == "dark",
+        "page_name": "add_ingredient",
         "ingredients_list": Ingredient.objects.all(),
         "food_substitutes_list": FoodSubstitute.objects.all(),
         "food_items_list": FoodItem.objects.all(),
     }
 
     if request.POST:
-        pprint(request.POST)
-
         form = NewIngredientForm(request.POST)
 
         if form.is_valid():
@@ -50,16 +60,16 @@ def ingredients(request):
 
             context["form"] = NewIngredientForm()
 
-            return render(request, "pantry/ingredients.html", context)
+            return render(request, "pantry/add_ingredient.html", context)
         else:
-            return HttpResponseRedirect(f"""/pantry/ingredients?ingredient_name={request.POST.get("ingredient_name")}""")
+            return HttpResponseRedirect(f"""/pantry/ingredients/add?ingredient_name={request.POST.get("name")}""")
     else:
         if ingredient_name := request.GET.get("ingredient_name"):
             context["form"] = NewIngredientForm({"name": ingredient_name})
         else:
             context["form"] = NewIngredientForm()
 
-    return render(request, "pantry/ingredients.html", context)
+    return render(request, "pantry/add_ingredient.html", context)
 
 
 def show_ingredient(request, ingredient_id):
@@ -104,6 +114,7 @@ def food_items(request):
         "page_name": "food_items",
         "ingredients_list": Ingredient.objects.all(),
         "food_items_list": FoodItem.objects.all(),
+        "packaging_types_exist": PackagingType.objects.count()
     }
 
     if request.POST:
@@ -124,6 +135,48 @@ def food_items(request):
         context["form"] = NewFoodItemForm()
     
     return render(request, "pantry/food_items.html", context)
+
+
+def add_food_item(request):
+    context = {
+        "dark_mode": request.session.get("theme") == "dark",
+        "page_name": "add_food_item",
+        "ingredients_list": Ingredient.objects.all(),
+        "food_items_list": FoodItem.objects.all(),
+    }
+
+    if request.POST:
+        request_data = {key: value for key, value in request.POST.items()}
+
+        if selected_ingredient_name := request_data.get("ingredient"):
+            """
+            choices: [('', '---------'), (<django.forms.models.ModelChoiceIteratorValue object at 0x10641a850>, 'soy sauce'), ...]
+            """
+            print(f"INGREDIENT: {selected_ingredient_name}")
+            try:
+                request_data["ingredient"] = Ingredient.objects.get(name=request_data.get("ingredient"))
+            except Ingredient.DoesNotExist as e:
+                pass
+
+        form = NewFoodItemForm(request_data)
+
+        if form.is_valid():
+            form.save()
+
+            context["form"] = NewFoodItemForm()
+
+            return HttpResponseRedirect(reverse("pantry:add_food_item"))
+        else:
+            context["form"] = form
+
+        return render(request, "pantry/add_food_item.html", context)
+    else:
+        if ingredient_name := request.GET.get("ingredient_name"):
+            context["form"] = NewFoodItemForm({"ingredient": ingredient_name})
+        else:
+            context["form"] = NewFoodItemForm()
+
+    return render(request, "pantry/add_food_item.html", context)
 
 
 def show_food_item(request, food_item_id):

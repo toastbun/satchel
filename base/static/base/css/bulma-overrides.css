@@ -19,9 +19,11 @@
     color: hsl(0, 0%, 96%) !important;
 }
 
-.form-label {
-    text-align: center;
+.list-label, .form-label {
+    /* text-align: center; */
     margin-bottom: 28px !important;
+    display: flex;
+    justify-content: space-between
 }
 
 

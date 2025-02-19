@@ -8,7 +8,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
 })
 
-/** function definitions **/
+
+/**
+ * 
+ * functions
+ * 
+ **/
 
 function getCsrfTokenFromForm(formElement) {
     return formElement.closest("form").querySelector("[name='csrfmiddlewaretoken']").value
@@ -24,7 +29,7 @@ async function deleteButtonClickHandler(e) {
 
 async function autocompleteTextInputUpdateHandler(e) {
     const csrfToken = getCsrfTokenFromForm(e.target)
-    const foodSubstitutes = await queryFoodSubstitutes(e.target.value, csrfToken)
+    const foodSubstitutes = await queryIngredientNames(e.target.value, csrfToken)
     const dropdown = getAssociatedDropdown(e.target)
 
     if (!(dropdown.classList.contains("is-active"))) {
@@ -94,7 +99,7 @@ async function deleteConfirmButtonClickHandler(e) {
     return deleteRecordResponse
 }
 
-async function queryFoodSubstitutes(searchTerm, csrftoken=null) {
+async function queryIngredientNames(searchTerm, csrftoken=null) {
     const url = `/pantry/food_substitutes/search`
 
     const response = {}
