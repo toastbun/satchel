@@ -1,16 +1,4 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-    const ingredientNameInput = document.querySelector("#id_food_substitute")
-    const ingredientNameInputContainer = ingredientNameInput.parentNode.parentNode
-
-    const foodSubstituteDropdown = document.querySelector("#food_substitute-dropdown")
-
-    ingredientNameInputContainer.after(foodSubstituteDropdown)
-
-    foodSubstituteDropdown.style.top = "-12px"
-    foodSubstituteDropdown.style.position = "relative"
-    foodSubstituteDropdown.style.width = "100%"
-    foodSubstituteDropdown.querySelector(".dropdown-menu").style.width = "100%"
-
     for (let deleteButton of document.querySelectorAll(".list-item-delete")) {
         deleteButton.addEventListener("click", deleteButtonClickHandler)
     }
@@ -161,17 +149,21 @@ async function deleteRecord(recordId, csrftoken=null) {
         return response
     }
 
+    // console.log(`Calling ${url} with ingredient_id ${recordId}`)
+
     try {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken
-            },
-            body: JSON.stringify({
-                record_id: recordId
+        const response = await fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                },
+                body: JSON.stringify({
+                    record_id: recordId
+                })
             })
-        })
     
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`)

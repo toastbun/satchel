@@ -27,6 +27,7 @@ class NewIngredientForm(forms.ModelForm):
         self.fields["name"].widget.attrs.update({"autofocus": "", "onfocus": "this.select()"})
 
         self.fields["substitute_key"].label = "Substitute category"  # remove input label
+        self.fields["substitute_key"].required = False
 
 
 class NewIngredientFormBkp(forms.ModelForm):
