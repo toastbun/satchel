@@ -1,17 +1,12 @@
 #! /usr/bin/env
 
 import csv
-import json
 import os
-import sys
 from django.conf import settings
 from django.db.models.base import ModelBase
-from django.db.models.fields import BooleanField, PositiveSmallIntegerField
 from django.db.models.fields.related import ForeignKey
 from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
-from pprint import pprint
 
-from data import csvs
 from pantry import models
 
 
