@@ -13,6 +13,7 @@ entry.sh
 restart
 run
 start
+status
 stop
 
 # clutter
