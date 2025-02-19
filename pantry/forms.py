@@ -9,8 +9,27 @@ from pantry.models import *
 class DateInput(forms.DateInput):
     input_type = "date"
 
-
 class NewIngredientForm(forms.ModelForm):
+    class Meta:
+        model = Ingredient
+        fields = ["name", "grocery_type", "substitute_key"]
+        widgets = {
+            "name": forms.TextInput(),
+            "grocery_type": forms.Select(),
+            "substitute_key": forms.Select()
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super(NewIngredientForm, self).__init__(*args, **kwargs)
+
+        self.fields["name"].label = ""
+        self.fields["name"].widget.attrs.update({"placeholder": "Ingredient name"})
+        self.fields["name"].widget.attrs.update({"autofocus": "", "onfocus": "this.select()"})
+
+        self.fields["substitute_key"].label = "Substitute category"  # remove input label
+
+
+class NewIngredientFormBkp(forms.ModelForm):
     class Meta:
         model = Ingredient
         fields = ["name", "substitute_key"]

@@ -1,4 +1,5 @@
 import json
+from pprint import pprint
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -40,6 +41,8 @@ def ingredients(request):
     }
 
     if request.POST:
+        pprint(request.POST)
+
         form = NewIngredientForm(request.POST)
 
         if form.is_valid():
