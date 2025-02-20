@@ -5,11 +5,13 @@ from . import views
 app_name = "pantry"
 urlpatterns = [
     path("", views.index, name="index"),
+    path("reset", views.reset_database, name="reset_database"),
 
     path("ingredients", views.ingredients, name="ingredients"),
     path("ingredients/<int:ingredient_id>/", views.show_ingredient, name="show_ingredient"),
     path("ingredients/search", views.search_ingredient_names, name="search_ingredient_names"),
     path("ingredients/add", views.add_ingredient, name="add_ingredient"),
+    path("ingredient/update", views.update_ingredient, name="update_ingredient"),
     path("ingredients/delete", views.delete_ingredient, name="delete_ingredient"),
 
     path("food_items", views.food_items, name="food_items"),

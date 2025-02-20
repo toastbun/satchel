@@ -7,6 +7,7 @@ from django.urls import reverse
 from base.utils import ModelEncoder
 from pantry.models import *
 from pantry.forms import *
+from scripts.import_csvs import import_csvs
 
 
 def index(request):
@@ -16,6 +17,12 @@ def index(request):
     }
 
     return render(request, "pantry/index.html", context)
+
+
+def reset_database(request):
+    import_csvs()
+
+    return redirect(reverse("pantry:ingredients"))
 
 
 def search_ingredient_names(request):
@@ -73,14 +80,37 @@ def add_ingredient(request):
 
 
 def show_ingredient(request, ingredient_id):
-    ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
-
     context = {
         "dark_mode": request.session.get("theme") == "dark",
-        "ingredient": ingredient
+        "page_name": "show_ingredient"
     }
 
+    try:
+        ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
+    except Exception as e:
+        if str(e) == "No Ingredient matches the given query.":
+            context["page_name"] = "ingredients"
+            context["food_items_list"] = FoodItem.objects.all()
+            context["food_substitutes_list"] = FoodSubstitute.objects.all()
+            context["ingredients_list"] = Ingredient.objects.all().order_by("name")
+
+            # return render(request, "pantry/ingredients.html", context)
+            return redirect(reverse("pantry:ingredients"), permanent=True)
+
+    context["ingredient"] = ingredient
+
     return render(request, "pantry/show_ingredient.html", context=context)
+
+
+def update_ingredient(request):
+    if request.method != "POST":
+        return redirect(reverse("pantry:ingredients"))
+
+    ingredient_id = request.POST.get("ingredient_id")
+
+    ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
+
+    return show_ingredient(request, ingredient_id)
 
 
 def delete_ingredient(request):
@@ -103,7 +133,9 @@ def delete_ingredient(request):
     return HttpResponse(json.dumps(
         {
             "success": True,
-            "updated_records_list": [ModelEncoder().encode(ingredient) for ingredient in Ingredient.objects.all()]
+            "updated_records_list": [
+                ModelEncoder().encode(ingredient) for ingredient in Ingredient.objects.all().order_by("name")
+            ]
         }
     ))
 

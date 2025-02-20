@@ -12,7 +12,9 @@
             {% for ingredient in ingredients_list %}
             <tr class="list-item-container">
                 <td class="list-item-cell list-item-name list-ingredients-item">
-                    <a href="{% url 'pantry:show_ingredient' ingredient.id %}">{{ ingredient }}</a>
+                    <a href="{% url 'pantry:show_ingredient' ingredient.id %}">
+                        <div class="name-container">{{ ingredient }}</div>
+                    </a>
                 </td>
 
                 {% comment %}

@@ -6,14 +6,24 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
 })
 
-async function themeToggleButtonClickHandler(e) {
+function getCsrfTokenFromPage() {
+    try {
+        return document.querySelector("[data-token]").dataset.token
+    } catch (error) {
+        console.log(`getCsrfTokenFromPage | Error: No element was found on the document with a "data-token" attribute.`)
+
+        return null
+    }
+}
+
+async function themeToggleButtonClickHandler(event) {
     const url = "/switch_theme"
 
-    const response = await fetch(url, {
+    await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": document.querySelector("[data-token]").dataset.token
+            "X-CSRFToken": getCsrfTokenFromPage()
         }
     })
 

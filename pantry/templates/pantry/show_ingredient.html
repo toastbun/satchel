@@ -7,11 +7,19 @@
 {% block content %}
 
 <div class="page-section">
-    <div class="item-container">
+    <div class="item-container" data-id="{{ ingredient.id }}" data-token="{{ csrf_token }}">
         <div class="label item-label">
-            {{ ingredient }}
-            <div class="item-edit-button-container">
+            <div class="label-section label-section-left label-section-name">
+                <div class="name-container">{{ ingredient }}</div>
+            </div>
+            <div class="label-section label-section-right item-icon-button-container">
                 <i class="fa-regular fa-pen-to-square"></i>
+            </div>
+        </div>
+        <div class="label item-label">
+            <div class="label-section label-section-center label-section-full min-height-line-height">
+                <div class="edit-notice has-text-info section-inactive">Editing</div>
+                <div class="delete-notice has-text-danger section-inactive">Deleting</div>
             </div>
         </div>
         <div class="description-container ingredient-description-container">
@@ -30,9 +38,16 @@
             </div>
             {% endif %}
         </div>
-        <div class="confirm-cancel-section edit-confirm-cancel-section section-inactive">
-            <div class="confirm-cancel-button confirm-container"><button class="button is-success">Confirm</button></div>
-            <div class="confirm-cancel-button cancel-container"><button class="button">Cancel</button></div>
+        <div class="confirm-section section-inactive">
+            <div class="button-container button-confirm-container confirm-container">
+                <button class="button button-confirm is-success">Confirm</button>
+            </div>
+            <div class="button-container button-confirm-container delete-container section-inactive">
+                <button class="button button-delete is-danger">Delete</button>
+            </div>
+            <div class="button-container button-confirm-container cancel-container">
+                <button class="button button-cancel">Cancel</button>
+            </div>
         </div>
     </div>
 </div>

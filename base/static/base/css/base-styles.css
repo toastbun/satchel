@@ -121,9 +121,43 @@ div {
     width: 100%;
 }
 
+.label-section {
+    display: flex;
+}
+
+.label-section.label-section-space-around {
+    justify-content: space-around;
+}
+
+.label-section.label-section-left {
+    justify-content: flex-start;
+}
+
+.label-section.label-section-center {
+    justify-content: center;
+}
+
+.label-section.label-section-right {
+    justify-content: flex-end;
+}
+
+.label-section.label-section-full {
+    width: 100%;
+}
+
+.label-section-name {
+    max-width: 80%;
+}
+
+.min-height-line-height {
+    min-height: 1.5em
+}
+
+
 .description-container {
     width: 100%;
     padding: 0% 2%;
+    margin-bottom: 28px;
 }
 
 .description-container > .description-item {
@@ -133,15 +167,19 @@ div {
     padding: 10px 0px;
 }
 
-.confirm-cancel-section {
+.confirm-section {
     display: flex;
     padding: 15px 0px;
     justify-content: center;
     width: 100%;
 }
 
-.confirm-cancel-section > .confirm-cancel-button {
+.confirm-section > .button-confirm-container {
     padding: 5px 10px;
+}
+
+.button-confirm, .button-delete, .button-cancel {
+    min-width: 92px;
 }
 
 .item-edit-button-container {
@@ -163,12 +201,21 @@ div {
 .list-item-cell {
     width: 100%;
     display: flex;
+    align-items: center;
     padding: 10px 12px;
-    align-items: center
 }
 
 .list-item-name {
     justify-content: flex-start;
+}
+
+.name-container {
+    width: 100%;
+    word-break: break-all;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
 }
 
 .list-item-icon {

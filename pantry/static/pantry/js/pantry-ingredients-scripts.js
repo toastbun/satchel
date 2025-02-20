@@ -1,29 +1,17 @@
 document.addEventListener("DOMContentLoaded", (event) => {
     console.log("Loaded pantry-ingredients-scripts.js")
 
-    for (let deleteButton of document.querySelectorAll(".list-item-delete")) {
-        deleteButton.addEventListener("click", deleteButtonClickHandler)
-    }
+    // for (let deleteButton of document.querySelectorAll(".list-item-delete")) {
+    //     deleteButton.addEventListener("click", deleteButtonClickHandler)
+    // }
 
     for (let textInputFieldWithAutocomplete of document.querySelectorAll(".autocomplete")) {
         textInputFieldWithAutocomplete.addEventListener("input", autocompleteTextInputUpdateHandler)
     }
 
     // add edit button functionality to show ingredient page
-    if (document.querySelector(".item-edit-button-container")) {
-        document.querySelector(".item-edit-button-container").addEventListener("click", function(event) {
-            if (document.querySelector(".edit-confirm-cancel-section").classList.contains("section-inactive")) {
-                document.querySelector(".edit-confirm-cancel-section").classList.remove("section-inactive")
-            } else {
-                document.querySelector(".edit-confirm-cancel-section").classList.add("section-inactive")
-            }
-        })
-
-        for (let confirmOrCancelButton of document.querySelectorAll(".confirm-cancel-button")) {
-            confirmOrCancelButton.addEventListener("click", function(event) {
-                document.querySelector(".edit-confirm-cancel-section").classList.add("section-inactive")
-            })
-        }
+    if (document.querySelector(".item-icon-button-container")) {
+        document.querySelector(".item-icon-button-container").addEventListener("click", activateEditSection)
     }
 })
 
@@ -42,9 +30,131 @@ function getAssociatedDropdown(formElement) {
     return formElement.closest("form").querySelector(`#${formElement.name}-dropdown`)
 }
 
-async function deleteButtonClickHandler(e) {
-    deleteConfirmButtonClickHandler(e)
+// async function deleteButtonClickHandler(event) {
+//     deleteConfirmButtonClickHandler(event)
+// }
+
+function activateEditSection(event) {
+    /**
+     * Called once upon first click of the edit icon.
+     *  - Change edit icon to trash icon.
+     *  - Show the Confirm and Cancel buttons.
+     *  - Show the "Editing Ingredient" notice.
+     **/
+    const target = event.target.closest(".item-icon-button-container")
+
+    target.removeEventListener("click", activateEditSection)
+    target.addEventListener("click", trashIconClickHandler)
+
+    // edit --> trash
+    toggleEditTrashIcon(document.querySelector(".item-icon-button-container i.fa-regular"), force="trash")
+
+    // ensure Confirm and Cancel button visibility
+    toggleSectionVisibility(document.querySelector(".confirm-section"), force="show")
+
+    // show appropriate notice
+    toggleSectionVisibility(document.querySelector(".delete-notice"), force="hide")
+    toggleSectionVisibility(document.querySelector(".edit-notice "), force="show")
+
+    // activate button functionality
+    // activateConfirmButton()
+    activateDeleteButton()
+    activateCancelButton()
 }
+
+function deactivateEditSection(event) {
+    // ??? --> edit
+    toggleEditTrashIcon(document.querySelector(".item-icon-button-container i.fa-regular"), force="edit")
+
+    // ensure no Confirm and Cancel button visibility
+    toggleSectionVisibility(document.querySelector(".confirm-section"), force="hide")
+
+    // Delete --> Confirm
+    toggleSectionVisibility(document.querySelector(".confirm-container"), force="show")
+    toggleSectionVisibility(document.querySelector(".delete-container"), force="hide")
+
+    // hide all notices
+    toggleSectionVisibility(document.querySelector(".delete-notice"), force="hide")
+    toggleSectionVisibility(document.querySelector(".edit-notice "), force="hide")
+
+    const iconContainer = event.target.closest(".item-container").querySelector(".item-icon-button-container")
+
+    // reset icon click listeners
+    iconContainer.removeEventListener("click", editIconClickHandler)
+    iconContainer.removeEventListener("click", trashIconClickHandler)
+    iconContainer.addEventListener("click", activateEditSection)
+}
+
+
+function editIconClickHandler(event) {
+    const target = event.target.closest(".item-icon-button-container")
+
+    // edit --> trash
+    toggleEditTrashIcon(document.querySelector(".item-icon-button-container i.fa-regular"), force="trash")
+
+    // Delete --> Confirm (if necessary)
+    toggleSectionVisibility(document.querySelector(".confirm-container"), force="show")
+    toggleSectionVisibility(document.querySelector(".delete-container"), force="hide")
+
+    // show appropriate notice
+    toggleSectionVisibility(document.querySelector(".delete-notice"), force="hide")
+    toggleSectionVisibility(document.querySelector(".edit-notice "), force="show")
+
+    // editIconClickHandler --> trashIconClickHandler
+    target.removeEventListener("click", editIconClickHandler)
+    target.addEventListener("click", trashIconClickHandler)
+}
+
+
+function trashIconClickHandler(event) {
+    const target = event.target.closest(".item-icon-button-container")
+
+    // trash --> edit
+    toggleEditTrashIcon(document.querySelector(".item-icon-button-container i.fa-regular"), force="edit")
+
+    // Confirm --> Delete (if necessary)
+    toggleSectionVisibility(document.querySelector(".delete-container"), force="show")
+    toggleSectionVisibility(document.querySelector(".confirm-container"), force="hide")
+
+    // show appropriate notice
+    toggleSectionVisibility(document.querySelector(".delete-notice"), force="show")
+    toggleSectionVisibility(document.querySelector(".edit-notice "), force="hide")
+
+    // trashIconClickHandler --> editIconClickHandler
+    target.removeEventListener("click", trashIconClickHandler)
+    target.addEventListener("click", editIconClickHandler)
+}
+
+function activateDeleteButton() {
+    document.querySelector(".button-container .button-delete").addEventListener("click", deleteButtonHandler)
+}
+
+function activateCancelButton() {
+    document.querySelector(".button-container .button-cancel").addEventListener("click", deactivateEditSection)
+}
+
+
+async function deleteButtonHandler(event) {
+    console.log("Deleted!")
+
+    const itemSectionContainer = event.target.closest("[data-id]")
+    const recordId = itemSectionContainer.dataset.id
+    const csrfToken = itemSectionContainer.dataset.token
+
+    console.log(`recordId: ${recordId}`)
+    console.log(`csrfToken: ${csrfToken}`)
+
+    await deleteIngredient(recordId, csrfToken)
+
+    // deactivateEditSection(event)
+
+    location.reload(true)
+}
+
+function cancelButtonHandler(event) {
+    deactivateEditSection(event)
+}
+
 
 async function autocompleteTextInputUpdateHandler(e) {
     const csrfToken = getCsrfTokenFromForm(e.target)
@@ -102,21 +212,21 @@ async function autocompleteTextInputUpdateHandler(e) {
     }
 }
 
-async function deleteConfirmButtonClickHandler(e) {
-    const recordElement = e.target.closest(".list-item-delete")
-    const recordId = recordElement.dataset.id
+// async function deleteConfirmButtonClickHandler(e) {
+//     const recordElement = e.target.closest(".list-item-delete")
+//     const recordId = recordElement.dataset.id
 
-    const list = recordElement.closest(".list-section")
-    const csrftoken = list.dataset.token
+//     const list = recordElement.closest(".list-section")
+//     const csrftoken = list.dataset.token
 
-    const deleteRecordResponse = await deleteRecord(recordId, csrftoken)
+//     const deleteRecordResponse = await deleteIngredient(recordId, csrftoken)
 
-    if (deleteRecordResponse.success) {
-        removeElementFromListOnPage("list-ingredients-container", recordId)
-    }
+//     if (deleteRecordResponse.success) {
+//         removeElementFromListOnPage("list-ingredients-container", recordId)
+//     }
 
-    return deleteRecordResponse
-}
+//     return deleteRecordResponse
+// }
 
 async function queryIngredientNames(searchTerm, csrftoken=null) {
     const url = `/pantry/food_substitutes/search`
@@ -161,7 +271,7 @@ async function queryIngredientNames(searchTerm, csrftoken=null) {
     }
 }
 
-async function deleteRecord(recordId, csrftoken=null) {
+async function deleteIngredient(recordId, csrftoken=null) {
     const url = "/pantry/ingredients/delete"
 
     const response = {}

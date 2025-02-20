@@ -10,18 +10,8 @@ from django.db.models.fields.related_descriptors import ForwardManyToOneDescript
 from pantry import models
 
 
-ROOT_PATH = os.getcwd()
-
 RESPONSES_POSITIVE = ["true", "yes", "t", "y", "1"]
 RESPONSES_NEGATIVE = ["false", "no", "f", "n", "0"]
-
-
-# reset database
-os.system("dropdb satcheldb")
-os.system("createdb satcheldb")
-os.system(f"rm {ROOT_PATH}/pantry/migrations/00*.py")
-os.system("python3 manage.py makemigrations")
-os.system("python3 manage.py migrate")
 
 
 def get_models_to_import():
@@ -126,7 +116,16 @@ def import_data_from_csv(model_name):
         raise Exception(error_message)
 
 
-def main():
+def import_csvs():
+    ROOT_PATH = os.getcwd()
+
+    # reset database
+    os.system("dropdb satcheldb")
+    os.system("createdb satcheldb")
+    os.system(f"rm {ROOT_PATH}/pantry/migrations/00*.py")
+    os.system("python3 manage.py makemigrations")
+    os.system("python3 manage.py migrate")
+
     models_to_import = get_models_to_import()
 
     for model_name in models_to_import:
@@ -141,4 +140,4 @@ def main():
 
             raise e
 
-main()
+# import_csvs()
