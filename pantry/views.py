@@ -112,7 +112,7 @@ def food_items(request):
     context = {
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "food_items",
-        "food_items_list": FoodItem.objects.all(),
+        "food_items_list": FoodItem.objects.all().order_by("ingredient__name"),
         "ingredients_list": Ingredient.objects.all().order_by("name"),
         "packaging_types_exist": PackagingType.objects.count(),
     }
@@ -141,7 +141,7 @@ def add_food_item(request):
     context = {
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "add_food_item",
-        "food_items_list": FoodItem.objects.all(),
+        "food_items_list": FoodItem.objects.all().order_by("ingredient__name"),
         "ingredients_list": Ingredient.objects.all().order_by("name"),
     }
 
@@ -149,13 +149,9 @@ def add_food_item(request):
         request_data = {key: value for key, value in request.POST.items()}
 
         if selected_ingredient_name := request_data.get("ingredient"):
-            """
-            choices: [('', '---------'), (<django.forms.models.ModelChoiceIteratorValue object at 0x10641a850>, 'soy sauce'), ...]
-            """
-            print(f"INGREDIENT: {selected_ingredient_name}")
             try:
-                request_data["ingredient"] = Ingredient.objects.get(name=request_data.get("ingredient"))
-            except Ingredient.DoesNotExist as e:
+                request_data["ingredient"] = Ingredient.objects.get(name=selected_ingredient_name)
+            except Ingredient.DoesNotExist:
                 pass
 
         form = NewFoodItemForm(request_data)

@@ -1,10 +1,29 @@
 document.addEventListener("DOMContentLoaded", (event) => {
+    console.log("Loaded pantry-ingredients-scripts.js")
+
     for (let deleteButton of document.querySelectorAll(".list-item-delete")) {
         deleteButton.addEventListener("click", deleteButtonClickHandler)
     }
 
     for (let textInputFieldWithAutocomplete of document.querySelectorAll(".autocomplete")) {
         textInputFieldWithAutocomplete.addEventListener("input", autocompleteTextInputUpdateHandler)
+    }
+
+    // add edit button functionality to show ingredient page
+    if (document.querySelector(".item-edit-button-container")) {
+        document.querySelector(".item-edit-button-container").addEventListener("click", function(event) {
+            if (document.querySelector(".edit-confirm-cancel-section").classList.contains("section-inactive")) {
+                document.querySelector(".edit-confirm-cancel-section").classList.remove("section-inactive")
+            } else {
+                document.querySelector(".edit-confirm-cancel-section").classList.add("section-inactive")
+            }
+        })
+
+        for (let confirmOrCancelButton of document.querySelectorAll(".confirm-cancel-button")) {
+            confirmOrCancelButton.addEventListener("click", function(event) {
+                document.querySelector(".edit-confirm-cancel-section").classList.add("section-inactive")
+            })
+        }
     }
 })
 

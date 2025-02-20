@@ -1,13 +1,7 @@
 document.addEventListener("DOMContentLoaded", (event) => {
-    applyHoverEffectsToListItemNames()
+    console.log("Loaded pantry-scripts.js")
+
+    // applyHoverEffectsToListItemNames()
+    // activateEditButtons()
+    // activateDeleteButtons()
 })
-
-
-function applyHoverEffectsToListItemNames() {
-    const listItems = document.querySelectorAll(".list-item-container")
-
-    for (let listItem of listItems) {
-        listItem.addEventListener("mouseover", elementHoverHandler)
-        listItem.addEventListener("mouseout", elementHoverHandler)
-    }
-}

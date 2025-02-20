@@ -19,6 +19,10 @@ div {
     user-select: none;
 }
 
+.section-inactive {
+    display: none !important;
+}
+
 .page-header {
     display: flex;
     height: 10vh;
@@ -77,6 +81,10 @@ div {
     background-color: var(--has-background-primary-light);
 } */
 
+.satchel-form {
+    width: 100%;
+}
+
 .text-input-dropdown {
     display: flex;
 }
@@ -87,25 +95,57 @@ div {
 }
 
 .list-entry-section {
-    width: 100%;
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
-.form-container, .list-container {
+.form-container, .item-container, .list-container {
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
 }
 
 .submit-button-container {
-    width: 100%;
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 28px !important;
     width: 100%;
+}
+
+.description-container {
+    width: 100%;
+    padding: 0% 2%;
+}
+
+.description-container > .description-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px;
+}
+
+.confirm-cancel-section {
+    display: flex;
+    padding: 15px 0px;
+    justify-content: center;
+    width: 100%;
+}
+
+.confirm-cancel-section > .confirm-cancel-button {
+    padding: 5px 10px;
+}
+
+.item-edit-button-container {
+    font-weight: normal;
 }
 
 .list-section {
@@ -124,7 +164,7 @@ div {
     width: 100%;
     display: flex;
     padding: 10px 12px;
-    align-items: center;
+    align-items: center
 }
 
 .list-item-name {
@@ -138,6 +178,7 @@ div {
 .list-item-delete {
     flex-grow: 1;
     width: 20%;
+    display: flex;
     justify-content: center;
 }
 
@@ -170,7 +211,14 @@ select, .select {
 
 .page-content {
     padding: 0px 5%;
-    /* border: 1px dotted red; */
+    display: flex;
+    justify-content: center;
+}
+
+.page-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 
@@ -178,8 +226,6 @@ select, .select {
     /** keep anything from directly touching the screen edge. **/
     .page-content {
         padding: 0px 2%;
-        display: flex;
-        justify-content: center;
     }
 
     /** most things will be a small distance from the screen edge. **/
@@ -195,7 +241,7 @@ select, .select {
         display: none;
     }
 
-    .form-container, .list-container {
+    .form-container, .item-container, .list-container {
         width: 40%;
     }
 

@@ -7,7 +7,7 @@
 <div class="page-section list-entry-section ingredient-entry-section">
     <div class="form-container form-add-container">
         <div class="label form-label">Add an ingredient<a href="{% url 'pantry:ingredients' %}">View all</a></div>
-        <form action="{% url 'pantry:add_ingredient' %}" method="post">
+        <form action="{% url 'pantry:add_ingredient' %}" class="satchel-form" method="post">
             {% csrf_token %}
             {{ form|bulma }}
             <div class="submit-button-container">

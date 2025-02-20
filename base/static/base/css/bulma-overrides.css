@@ -19,13 +19,6 @@
     color: hsl(0, 0%, 96%) !important;
 }
 
-.list-label, .form-label {
-    /* text-align: center; */
-    margin-bottom: 28px !important;
-    display: flex;
-    justify-content: space-between
-}
-
 
 @media screen and (min-width: 1023px) {  /* for desktop screens */
     .navbar-item {

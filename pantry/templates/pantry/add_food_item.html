@@ -8,7 +8,7 @@
     <div class="form-container form-add-container">
         <div class="label form-label form-label">Add a food item<a href="{% url 'pantry:food_items' %}">View all</a></div>
         {% if ingredients_list %}
-        <form action="{% url 'pantry:add_food_item' %}" method="post">
+        <form action="{% url 'pantry:add_food_item' %}" class="satchel-form" method="post">
             {% csrf_token %}
             {{ form|bulma }}
             {% if ingredients_list %}

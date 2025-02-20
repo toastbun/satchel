@@ -1,9 +1,45 @@
-{% extends 'base.html' %}
+{% extends 'pantry/index.html' %}
 {% load static %}
 
 {% block title %}pantry{% endblock %}
 
 
 {% block content %}
-    <div class="label">{{ ingredient }}</div>
+
+<div class="page-section">
+    <div class="item-container">
+        <div class="label item-label">
+            {{ ingredient }}
+            <div class="item-edit-button-container">
+                <i class="fa-regular fa-pen-to-square"></i>
+            </div>
+        </div>
+        <div class="description-container ingredient-description-container">
+            <div class="description-item">
+                <div class="description-name">Grocery type:</div>
+                <div class="description-value">
+                    <a href="#">{{ ingredient.grocery_type.name }}</a>
+                </div>
+            </div>
+            {% if ingredient.substitute_key.name %}
+            <div class="description-item">
+                <div class="description-name">Substitute key:</div>
+                <div class="description-value">
+                    <a href="#">{{ ingredient.substitute_key.name }}</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="confirm-cancel-section edit-confirm-cancel-section section-inactive">
+            <div class="confirm-cancel-button confirm-container"><button class="button is-success">Confirm</button></div>
+            <div class="confirm-cancel-button cancel-container"><button class="button">Cancel</button></div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
+
+{% block pantry_scripts %}
+<script src="{% static 'pantry/js/pantry-ingredients-scripts.js' %}"></script>
+<script src="{% static 'pantry/js/pantry-scripts.js' %}"></script>
+{% endblock pantry_scripts %}
