@@ -117,6 +117,11 @@ def import_data_from_csv(model_name):
 
 
 def import_csvs():
+    if os.environ.get("SATCHEL_ENV") != "dev":
+        print(f"Import scripts can only run in non-prod environments.")
+
+        return
+
     ROOT_PATH = os.getcwd()
 
     # reset database
@@ -140,4 +145,7 @@ def import_csvs():
 
             raise e
 
-# import_csvs()
+if __name__ == "django.core.management.commands.shell":
+    import_csvs()
+else:
+    print("Import script was not run by the command shell. Aborting.")
