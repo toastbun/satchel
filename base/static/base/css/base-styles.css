@@ -69,18 +69,6 @@ div {
     display: flex;
 }
 
-/* .hover-select-light {
-    background-color: "hsl(0, 0%, 96%)";
-}
-
-.hover-select-dark {
-    background-color: "hsl(0, 0%, 21%)";
-}
-
-.dropdown-item:hover {
-    background-color: var(--has-background-primary-light);
-} */
-
 .satchel-form {
     width: 100%;
 }
@@ -123,6 +111,7 @@ div {
 
 .label-section {
     display: flex;
+    padding: 8px;
 }
 
 .label-section.label-section-space-around {
@@ -150,7 +139,8 @@ div {
 }
 
 .min-height-line-height {
-    min-height: 1.5em
+    min-height: 1.5em;
+    padding: 0px;
 }
 
 
@@ -229,12 +219,12 @@ div {
     justify-content: center;
 }
 
-.list-item-delete:hover {
+/* .list-item-delete:hover {
     cursor: pointer;
     background-color: hsl(348, 100%, 61%);
     transition-property: background-color;
     transition-duration: var(--bulma-duration);
-}
+} */
 
 .list-item-name, .notice, .form-field {
     padding-left: 12px;

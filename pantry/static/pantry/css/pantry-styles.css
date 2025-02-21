@@ -2,6 +2,10 @@
     padding: 15px 12px;
 }
 
+.item-icon-button-container {
+    width: 50px;
+}
+
 @media screen and (min-width: 1023px) {  /* for desktop screens */
 
 }

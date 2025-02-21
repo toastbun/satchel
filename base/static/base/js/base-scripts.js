@@ -19,6 +19,15 @@ function getCsrfTokenFromPage() {
 async function themeToggleButtonClickHandler(event) {
     const url = "/switch_theme"
 
+    const page = document.querySelector("html")
+    page.dataset["theme"] = page.dataset["theme"] == "dark" ? "light" : "dark"
+
+    for (let themeIconContainer of document.querySelectorAll(".theme-toggle")) {
+        const themeIcon = themeIconContainer.querySelector("i")
+        themeIcon.classList.remove("fa-sun", "fa-moon")
+        themeIcon.classList.add(page.dataset["theme"] == "dark" ? "fa-sun" : "fa-moon")
+    }
+
     await fetch(url, {
         method: "POST",
         headers: {
@@ -27,7 +36,7 @@ async function themeToggleButtonClickHandler(event) {
         }
     })
 
-    location.reload(true)
+    // location.reload(true)
 }
 
 window.addEventListener("load", (event) => {
@@ -39,10 +48,9 @@ const theme = document.querySelector("[data-theme]").dataset.theme
 
 /** hover effects **/
 
-const HOVER_COLOR = theme == "light" ? "hsl(0, 0%, 96%)" : "hsl(0, 0%, 21%)"
-
 function toggleElementBackgroundOnHover(element, isHovering, defaultBackgroundColor = "") {
-    element.style.backgroundColor = isHovering ? HOVER_COLOR : defaultBackgroundColor
+    const hoverColor = document.querySelector("[data-theme]").dataset.theme == "dark" ? "hsl(0, 0%, 21%)" : "hsl(0, 0%, 96%)"
+    element.style.backgroundColor = isHovering ? hoverColor : defaultBackgroundColor
 }
 
 function elementHoverHandler(event) {

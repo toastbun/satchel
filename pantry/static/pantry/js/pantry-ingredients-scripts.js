@@ -189,7 +189,8 @@ async function autocompleteTextInputUpdateHandler(e) {
 
     for (let dropdownItem of document.querySelectorAll(".dropdown-item")) {
         dropdownItem.addEventListener("mouseover", function(e) {
-            e.target.style.backgroundColor = HOVER_COLOR
+            const hoverColor = document.querySelector("[data-theme]").dataset.theme == "dark" ? "hsl(0, 0%, 21%)" : "hsl(0, 0%, 96%)"
+            e.target.style.backgroundColor = hoverColor
         })
 
         dropdownItem.addEventListener("mouseout", function(e) {

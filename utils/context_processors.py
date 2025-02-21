@@ -8,5 +8,6 @@ def theme_context(request):
         request.session["theme"] = default_theme
 
     return {
+        "theme": request.session.get("theme"),
         "dark_mode": request.session.get("theme", default_theme)
     }

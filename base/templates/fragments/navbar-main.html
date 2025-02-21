@@ -3,7 +3,8 @@
 <nav class="navbar navbar-main" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item unselectable" href="{% url 'base:index' %}">
-            <img class="navbar-logo" src="{% if dark_mode == True %}{% static 'base/images/satchel-logo-dark.png' %}{% else %}{% static 'base/images/satchel-logo-light.png' %}{% endif %}" />
+            <!-- <img class="navbar-logo" src="{% if dark_mode == True %}{% static 'base/images/satchel-logo-dark.png' %}{% else %}{% static 'base/images/satchel-logo-light.png' %}{% endif %}" /> -->
+            <div class="navbar-logo">satchel</div>
         </a>
         <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-basic">
             <span aria-hidden="true"></span>
@@ -40,17 +41,17 @@
                 <div class="navbar-item-min-width navbar-item-button unselectable">docs</div>
             </a>
 
-            <div class="navbar-item navbar-item-no-padding hover-select-{% if dark_mode == True %}dark{% else %}light{% endif %}">
+            <div class="navbar-item navbar-item-no-padding hover-select-{{ theme }}">
                 <div class="navbar-item-button unselectable">
                     <div class="theme-toggle desktop-invisible" data-token="{{ csrf_token }}">
-                        <button class="button is-rounded">{% if dark_mode == True %}<i class="fa-regular fa-sun"></i>{% else %}<i class="fa-solid fa-moon"></i>{% endif %}</button>
+                        <button class="button is-rounded">{% if theme == "dark" %}<i class="fa-regular fa-sun"></i>{% else %}<i class="fa-solid fa-moon"></i>{% endif %}</button>
                     </div>
                 </div>
             </div>
 
         <div class="navbar-end">
             <div class="theme-toggle mobile-invisible" data-token="{{ csrf_token }}">
-                <button class="button is-rounded">{% if dark_mode == True %}<i class="fa-regular fa-sun"></i>{% else %}<i class="fa-solid fa-moon"></i>{% endif %}</button>
+                <button class="button is-rounded">{% if theme == "dark" %}<i class="fa-regular fa-sun"></i>{% else %}<i class="fa-solid fa-moon"></i>{% endif %}</button>
             </div>
         </div>
     </div>

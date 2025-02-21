@@ -5,7 +5,8 @@ from django.shortcuts import redirect, render
 
 def index(request):
     context = {
-       "dark_mode": request.session.get("theme") == "dark",
+        "theme": request.session.get("theme"),
+        "dark_mode": request.session.get("theme") == "dark",
     }
 
     return render(request, "home.html", context=context)
@@ -14,9 +15,11 @@ def index(request):
 
 def switch_theme(request):
     if request.method == "POST":
-        if not request.session.get("theme"):
+        requested_theme = request.session.get("theme")
+
+        if not requested_theme:
             request.session["theme"] = "light"
         else:
-            request.session["theme"] = "light" if request.session["theme"] == "dark" else "dark"
+            request.session["theme"] = "light" if requested_theme == "dark" else "dark"
 
         return HttpResponse(json.dumps("Success!"))

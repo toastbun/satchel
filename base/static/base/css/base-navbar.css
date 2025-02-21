@@ -11,9 +11,16 @@
 }
 
 .navbar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 150px !important;
-    height: auto !important;
-    max-height: none !important;
+    /* height: auto !important;
+    max-height: none !important; */
+    font-family: "Lato", serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    font-style: normal;
 }
 
 .navbar-start > * {

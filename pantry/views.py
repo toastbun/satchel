@@ -12,6 +12,7 @@ from scripts.import_csvs import import_csvs
 
 def index(request):
     context = {
+        "theme": request.session.get("theme"),
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "pantry_index"
     }
@@ -40,6 +41,7 @@ def search_ingredient_names(request):
 
 def ingredients(request):
     context = {
+        "theme": request.session.get("theme"),
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "ingredients",
         "food_items_list": FoodItem.objects.all(),
@@ -52,6 +54,7 @@ def ingredients(request):
 
 def add_ingredient(request):
     context = {
+        "theme": request.session.get("theme"),
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "add_ingredient",
         "food_substitutes_list": FoodSubstitute.objects.all(),
@@ -81,6 +84,7 @@ def add_ingredient(request):
 
 def show_ingredient(request, ingredient_id):
     context = {
+        "theme": request.session.get("theme"),
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "show_ingredient"
     }
@@ -142,6 +146,7 @@ def delete_ingredient(request):
 
 def food_items(request):
     context = {
+        "theme": request.session.get("theme"),
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "food_items",
         "food_items_list": FoodItem.objects.all().order_by("ingredient__name"),
@@ -171,6 +176,7 @@ def food_items(request):
 
 def add_food_item(request):
     context = {
+        "theme": request.session.get("theme"),
         "dark_mode": request.session.get("theme") == "dark",
         "page_name": "add_food_item",
         "food_items_list": FoodItem.objects.all().order_by("ingredient__name"),
@@ -211,6 +217,7 @@ def show_food_item(request, food_item_id):
     food_item = get_object_or_404(FoodItem, pk=food_item_id)
 
     context = {
+        "theme": request.session.get("theme"),
         "dark_mode": request.session.get("theme") == "dark",
         "food_item": food_item
     }
