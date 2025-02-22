@@ -27,7 +27,7 @@
                 <div class="description-name">Grocery type:</div>
                 <div class="description-value">
                     {% if ingredient.grocery_type %}<a href="#">{% endif %}
-                        <div class="editable-record-property" data-prop="grocery_type" data-inputtype="select">
+                        <div class="editable-record-property" id="ingredient-grocery_type-container" data-prop="grocery_type" data-inputtype="select">
                             {% if ingredient.grocery_type %}
                             {{ ingredient.grocery_type.name }}
                             {% else %}
@@ -42,7 +42,7 @@
                 <div class="description-name">Substitute key:</div>
                 <div class="description-value">
                     {% if ingredient.substitute_key %}<a href="#">{% endif %}
-                        <div class="editable-record-property" data-prop="substitute_key" data-inputtype="select">
+                        <div class="editable-record-property" id="ingredient-substitute_key-container" data-prop="substitute_key" data-inputtype="select">
                             {% if ingredient.substitute_key %}
                             {{ ingredient.substitute_key.name }}
                             {% else %}

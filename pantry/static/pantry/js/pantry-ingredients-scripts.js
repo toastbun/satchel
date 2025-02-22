@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
 })
 
 
+let initialPropertyValues = {}
+
+
 /**
  * 
  * functions
@@ -30,9 +33,6 @@ function getAssociatedDropdown(formElement) {
     return formElement.closest("form").querySelector(`#${formElement.name}-dropdown`)
 }
 
-// async function deleteButtonClickHandler(event) {
-//     deleteConfirmButtonClickHandler(event)
-// }
 
 async function activateEditSection(event) {
     /**
@@ -42,6 +42,16 @@ async function activateEditSection(event) {
      *  - Show the "Editing Ingredient" notice.
      **/
     const target = event.target.closest(".item-icon-button-container")
+
+    const name = document.querySelector(`#ingredient-name-container`).innerText
+    const groceryType = document.querySelector(`#ingredient-grocery_type-container`).innerText
+    const substituteKey = document.querySelector(`#ingredient-substitute_key-container`).innerText
+
+    initialPropertyValues = {
+        name: name,
+        groceryType: groceryType,
+        substituteKey: substituteKey
+    }
 
     try {
         await togglePropertiesEditability(document.querySelectorAll(".editable-record-property"), force="on")
@@ -74,6 +84,8 @@ async function deactivateEditSection(event) {
     } catch (error) {
         console.log(`editIconClickHandler | ${error}`)
     }
+
+    initialPropertyValues = {}
 
     // ??? --> edit
     toggleEditTrashIcon(document.querySelector(".item-icon-button-container i.fa-regular"), force="edit")
@@ -130,6 +142,11 @@ async function trashIconClickHandler(event) {
     } catch (error) {
         console.log(`editIconClickHandler | ${error}`)
     }
+
+    // for (let inputElementContainer of document.querySelectorAll(".editable-record-property")) {
+    //     console.log(inputElementContainer)
+    //     // initialPropertyValues
+    // }
 
     const target = event.target.closest(".item-icon-button-container")
 

@@ -53,10 +53,9 @@ async function togglePropertiesEditability(elementsList=null, force=null) {
      * A "non-editable" field is strictly text or visual content without input.
      * Force a state by using the force parameter (valid force parameters are "on" and "off").
      */
-    console.log(`Entered togglePropertiesEditability | ${force} | ${force == "on" ? "PROPS SHOULD BE EDITABLE" : "PROPS SHOULD NOT BE EDITABLE"}`)
-
     if (elementsList == null) {
         const errorMessage = `Please provide a list of elements whose properties editability should be toggled.`
+    
         throw Error(`togglePropertiesEditability | Error: ${errorMessage}`)
     }
 
@@ -67,7 +66,6 @@ async function togglePropertiesEditability(elementsList=null, force=null) {
     nullValue = "---------"
 
     if ((force == "on" && force != "off") || elementsList.every((element) => !element.classList.contains("editability-active"))) {
-        console.log("Making properties EDITABLE.")
         // force is "on" OR no elements contain ".editability-active"
         // off --> on
 
@@ -87,20 +85,38 @@ async function togglePropertiesEditability(elementsList=null, force=null) {
                 let data = []
 
                 if (property == "grocery_type") {
-                    response = await getGroceryTypes(true, csrfToken)
-                    data = response.data
+                    let groceryTypes = localStorage.getItem("groceryTypes")
+
+                    if (groceryTypes) {
+                        data = groceryTypes.split(",")
+                    } else {
+                        response = await getGroceryTypes(true, csrfToken)
+                        groceryTypes = response.data
+
+                        localStorage.setItem("groceryTypes", groceryTypes)
+                        data = groceryTypes
+                    }
                 } else if (property == "substitute_key") {
-                    response = await getFoodSubstitutes(true, csrfToken)
-                    data = response.data
+                    let foodSubstitutes = localStorage.getItem("foodSubstitutes")
+
+                    if (foodSubstitutes) {
+                        data = foodSubstitutes.split(",")
+                    } else {
+                        response = await getFoodSubstitutes(true, csrfToken)
+                        foodSubstitutes = response.data
+
+                        localStorage.setItem("foodSubstitutes", foodSubstitutes)
+                        data = foodSubstitutes
+                    }
                 }
 
-                 element.innerText = null
+                element.innerText = null
 
-                 let selectHTML = `<span class="select"><select id="${property}-input">`
+                let selectHTML = `<span class="select"><select id="${property}-input">`
 
-                 for (let selectValue of data) {
+                for (let selectValue of data) {
                     selectHTML = `${selectHTML}<option value="${selectValue ? selectValue : null}" ${selectValue == value ? "selected" : ""}>${selectValue ? selectValue : nullValue}</option>`
-                 }
+                }
 
                  element.innerHTML = `${selectHTML}</select></span>`
             } else {
@@ -110,19 +126,13 @@ async function togglePropertiesEditability(elementsList=null, force=null) {
             element.classList.add("editability-active")
         }
     } else if ((force == "off" && force != "on") || elementsList.every((element) => element.classList.contains("editability-active"))) {
-        console.log("Making properties NON-EDITABLE.")
         // force is "off" or all elements contain ".editability-active"
         // on --> off
         for (element of elementsList) {
-            console.log(element)
             // do stuff
             const property = element.dataset.prop
             const inputType = element.dataset.inputtype
             const value = element.innerText
-
-            console.log(`property: ${property}`)
-            console.log(`inputType: ${inputType}`)
-            console.log(`value: ${value}`)
 
             if (inputType == "text") {
                 element.innerText = element.querySelector("input").value
