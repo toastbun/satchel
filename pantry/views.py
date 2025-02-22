@@ -196,8 +196,8 @@ def update_ingredient(request):
 
         print(f"Value: {value} | Type: {type(value)}")
 
-        if value == None:
-            setattr(ingredient, property, value)
+        if value == None or value == "null":
+            setattr(ingredient, property, None)
 
             response["updated"].append({property: value})
         else:

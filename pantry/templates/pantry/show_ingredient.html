@@ -10,7 +10,7 @@
     <div class="item-container" data-id="{{ ingredient.id }}" data-token="{{ csrf_token }}">
         <div class="label item-label">
             <div class="label-section label-section-left label-section-name">
-                <div class="name-container editable-record-property" data-prop="name" data-inputtype="text">{{ ingredient }}</div>
+                <div class="name-container editable-record-property" id="ingredient-name-container" data-prop="name" data-inputtype="text">{{ ingredient }}</div>
             </div>
             <div class="label-section label-section-right item-icon-button-container">
                 <i class="fa-regular fa-pen-to-square"></i>
@@ -26,9 +26,15 @@
             <div class="description-item">
                 <div class="description-name">Grocery type:</div>
                 <div class="description-value">
-                    <a href="#">
-                        <div class="editable-record-property" data-prop="grocery_type" data-inputtype="select">{{ ingredient.grocery_type.name }}</div>
-                    </a>
+                    {% if ingredient.grocery_type %}<a href="#">{% endif %}
+                        <div class="editable-record-property" data-prop="grocery_type" data-inputtype="select">
+                            {% if ingredient.grocery_type %}
+                            {{ ingredient.grocery_type.name }}
+                            {% else %}
+                            N/A
+                            {% endif %}
+                        </div>
+                        {% if ingredient.grocery_type %}</a>{% endif %}
                 </div>
             </div>
             {% comment %}<!-- {% if ingredient.substitute_key.name %} -->{% endcomment %}
