@@ -43,14 +43,10 @@ async function activateEditSection(event) {
      **/
     const target = event.target.closest(".item-icon-button-container")
 
-    const name = document.querySelector(`#ingredient-name-container`).innerText
-    const groceryType = document.querySelector(`#ingredient-grocery_type-container`).innerText
-    const substituteKey = document.querySelector(`#ingredient-substitute_key-container`).innerText
-
     initialPropertyValues = {
-        name: name,
-        groceryType: groceryType,
-        substituteKey: substituteKey
+        name: document.querySelector(`#ingredient-name-container`).innerText,
+        grocery_type: document.querySelector(`#ingredient-grocery_type-container`).innerText,
+        substitute_key: document.querySelector(`#ingredient-substitute_key-container`).innerText
     }
 
     try {
@@ -85,7 +81,7 @@ async function deactivateEditSection(event) {
         console.log(`editIconClickHandler | ${error}`)
     }
 
-    initialPropertyValues = {}
+    resetEditableProperties()
 
     // ??? --> edit
     toggleEditTrashIcon(document.querySelector(".item-icon-button-container i.fa-regular"), force="edit")
@@ -136,6 +132,18 @@ async function editIconClickHandler(event) {
 }
 
 
+function resetEditableProperties() {
+    for (let initialProperty of Object.keys(initialPropertyValues)) {
+        const initialPropertyValue = initialPropertyValues[initialProperty]
+        const editablePropertyContainer = document.getElementById(`ingredient-${initialProperty}-container`)
+
+        editablePropertyContainer.innerText = initialPropertyValue
+    }
+
+    console.log(initialPropertyValues)
+}
+
+
 async function trashIconClickHandler(event) {
     try {
         await togglePropertiesEditability(document.querySelectorAll(".editable-record-property"), force="off")
@@ -143,10 +151,7 @@ async function trashIconClickHandler(event) {
         console.log(`editIconClickHandler | ${error}`)
     }
 
-    // for (let inputElementContainer of document.querySelectorAll(".editable-record-property")) {
-    //     console.log(inputElementContainer)
-    //     // initialPropertyValues
-    // }
+    resetEditableProperties()
 
     const target = event.target.closest(".item-icon-button-container")
 
@@ -206,8 +211,6 @@ async function updateButtonClickHandler(event) {
 
         updateData[property] = selectedValue
     }
-
-    console.log(updateData)
 
     try {
         await updateIngredient(recordId, updateData, csrfToken)
