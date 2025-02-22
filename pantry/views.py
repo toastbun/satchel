@@ -86,7 +86,7 @@ def search_ingredient_names(request):
         request_body = json.loads(request.body)
         search_term = request_body.get("search_term")
 
-        queryset_results = Ingredient.objects.filter(name__startswith=search_term.lower())
+        queryset_results = Ingredient.objects.filter(name__startswith=search_term.lower()).order_by("name")
         response = [i.name for i in queryset_results]
 
         return HttpResponse(json.dumps(response))
