@@ -112,6 +112,8 @@ div {
 .label-section {
     display: flex;
     padding: 8px;
+    height: 56px;
+    align-items: center;
 }
 
 .label-section.label-section-space-around {
@@ -155,6 +157,20 @@ div {
     display: flex;
     justify-content: space-between;
     padding: 10px 0px;
+    height: 60px;
+}
+
+.description-item * {
+    display: flex;
+    align-items: center;
+}
+
+.description-value {
+    width: 50%;
+}
+
+.editable-record-property {
+    height: 40px;
 }
 
 .confirm-section {
@@ -168,7 +184,7 @@ div {
     padding: 5px 10px;
 }
 
-.button-confirm, .button-delete, .button-cancel {
+.button-confirm {
     min-width: 92px;
 }
 
@@ -200,12 +216,22 @@ div {
 }
 
 .name-container {
+    display: flex;
+    align-items: center;
     width: 100%;
     word-break: break-all;
     hyphens: auto;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
     -ms-hyphens: auto;
+}
+
+.editable-record-property:not(.editability-active) {
+    padding-left: 12px;
+}
+
+.editable-record-property.editability-active {
+    padding-left: 0px;
 }
 
 .list-item-icon {

@@ -104,13 +104,13 @@ async function autocompleteTextInputScrollHandler(event) {
 }
 
 
-async function queryIngredientNames(searchTerm, csrftoken=null) {
+async function queryIngredientNames(searchTerm, csrfToken=null) {
     const url = `/pantry/ingredients/search`
 
     const response = {}
 
-    if (csrftoken == null) {
-        response.message = "queryIngredientNames | Please provide a csrftoken."
+    if (csrfToken == null) {
+        response.message = "queryIngredientNames | Please provide a csrfToken."
         console.log(response.message)
 
         return response
@@ -121,7 +121,7 @@ async function queryIngredientNames(searchTerm, csrftoken=null) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken
+                "X-CSRFToken": csrfToken
             },
             body: JSON.stringify({
                 search_term: searchTerm

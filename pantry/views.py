@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from base.utils import ModelEncoder
+from pantry.api import *
 from pantry.models import *
 from pantry.forms import *
 from scripts.import_csvs import import_csvs
@@ -26,15 +27,69 @@ def reset_database(request):
     return redirect(reverse("pantry:ingredients"))
 
 
+def get_grocery_types(request):
+    if request.method != "POST":
+        print(f"views.get_grocery_types | Handle this case.")
+
+        return HttpResponse(json.dumps({"success": False}))
+    
+    """
+    expecting:
+
+    {
+        names: true,
+
+    }
+    """
+    
+    request_body = json.loads(request.body)
+    names_only = request_body.get("names")
+
+    grocery_types = get_all_grocery_types(names=names_only)
+
+    print(f"NAMES_ONLY: {names_only}")
+
+    print("GROCERY_TYPES:")
+    print(grocery_types)
+
+    return HttpResponse(json.dumps(grocery_types))
+
+
+def get_food_substitutes(request):
+    print(f"HIT FOOD SUBS")
+    if request.method != "POST":
+        print(f"views.get_food_substitutes | Handle this case.")
+
+        return HttpResponse(json.dumps({"success": False}))
+    
+    """
+    expecting:
+
+    {
+        names: true,
+    }
+    """
+    
+    request_body = json.loads(request.body)
+    names_only = request_body.get("names")
+
+    food_substitutes = get_all_food_substitutes(names=names_only)
+
+    print(f"FOOD_SUBSTITUTES:")
+    print(food_substitutes)
+
+    return HttpResponse(json.dumps(food_substitutes))
+
+
 def search_ingredient_names(request):
     if request.method == "POST":
         request_body = json.loads(request.body)
         search_term = request_body.get("search_term")
 
         queryset_results = Ingredient.objects.filter(name__startswith=search_term.lower())
-        response_data = [i.name for i in queryset_results]
+        response = [i.name for i in queryset_results]
 
-        return HttpResponse(json.dumps(response_data))
+        return HttpResponse(json.dumps(response))
     else:
         return redirect(reverse("pantry:ingredients"))
 
@@ -109,35 +164,89 @@ def show_ingredient(request, ingredient_id):
 def update_ingredient(request):
     if request.method != "POST":
         return redirect(reverse("pantry:ingredients"))
-
-    ingredient_id = request.POST.get("ingredient_id")
-
-    ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
-
-    return show_ingredient(request, ingredient_id)
-
-
-def delete_ingredient(request):
+    
+    response = {
+        "updated": []
+    }
+    
     request_body = json.loads(request.body)
 
-    response = {"success": False}
+    print("\n")
+    print(f"REQUEST:")
+    print(request_body)
+    print("\n")
 
-    record_id = request_body.get("record_id")
+    ingredient_id = request_body.get("record_id")
+    update_data = request_body.get("update_data")
 
-    if not type(record_id) == str or not record_id.isnumeric():
-        error_message = f"views.delete_ingredient | Request body does not contain a valid record_id: {request_body}"
+    if not type(ingredient_id) == str or not ingredient_id.isnumeric():
+        error_message = f"views.update_ingredient | Request body does not contain a valid ingredient_id: {request_body}"
         print(error_message)
 
         response["message"] = error_message
 
         return HttpResponse(json.dumps(response))
     
-    Ingredient.objects.get(pk=int(record_id)).delete()
+    ingredient_id = int(ingredient_id)
+
+    ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
+
+    for property, value in update_data.items():
+        print(f"{property} before update: {getattr(ingredient, property)}")
+
+        print(f"Value: {value} | Type: {type(value)}")
+
+        if value == None:
+            setattr(ingredient, property, value)
+
+            response["updated"].append({property: value})
+        else:
+            # set related fields manually
+            if property == "grocery_type":
+                setattr(ingredient, property, GroceryType.objects.get(name=value))
+            elif property == "substitute_key":
+                setattr(ingredient, property, FoodSubstitute.objects.get(name=value))
+            else:
+                setattr(ingredient, property, value)
+
+        ingredient.save()
+
+    print(f"UPDATED NAME TO: {ingredient.name}")
+    print(f"UPDATED GROCERY TYPE TO: {ingredient.grocery_type}")
+    print(f"UPDATED SUBSTITUTE KEY TO: {ingredient.substitute_key}")
+    
+    print(f"WOOOOO!!!!\n")
+    print(response)
+
+    return HttpResponse(json.dumps(response))
+
+
+def delete_ingredient(request):
+    if request.method != "POST":
+        return redirect(reverse("pantry:ingredients"))
+    
+    response = {"success": False}
+
+    request_body = json.loads(request.body)
+
+    ingredient_id = request_body.get("record_id")
+
+    if not type(ingredient_id) == str or not ingredient_id.isnumeric():
+        error_message = f"views.delete_ingredient | Request body does not contain a valid ingredient_id: {request_body}"
+        print(error_message)
+
+        response["message"] = error_message
+
+        return HttpResponse(json.dumps(response))
+    
+    ingredient_id = int(ingredient_id)
+    
+    Ingredient.objects.get(pk=ingredient_id).delete()
 
     return HttpResponse(json.dumps(
         {
             "success": True,
-            "updated_records_list": [
+            "updated_ingredients_list": [
                 ModelEncoder().encode(ingredient) for ingredient in Ingredient.objects.all().order_by("name")
             ]
         }

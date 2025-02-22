@@ -14,6 +14,10 @@ def index(request):
 
 
 def switch_theme(request):
+    response = {
+        "message": "Invalid request."
+    }
+
     if request.method == "POST":
         requested_theme = request.session.get("theme")
 
@@ -21,5 +25,9 @@ def switch_theme(request):
             request.session["theme"] = "light"
         else:
             request.session["theme"] = "light" if requested_theme == "dark" else "dark"
+        
+        response = {
+            "message": "Success"
+        }
 
-        return HttpResponse(json.dumps("Success!"))
+    return HttpResponse(json.dumps(response))

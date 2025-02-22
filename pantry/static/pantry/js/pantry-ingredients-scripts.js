@@ -34,7 +34,7 @@ function getAssociatedDropdown(formElement) {
 //     deleteConfirmButtonClickHandler(event)
 // }
 
-function activateEditSection(event) {
+async function activateEditSection(event) {
     /**
      * Called once upon first click of the edit icon.
      *  - Change edit icon to trash icon.
@@ -42,6 +42,12 @@ function activateEditSection(event) {
      *  - Show the "Editing Ingredient" notice.
      **/
     const target = event.target.closest(".item-icon-button-container")
+
+    try {
+        await togglePropertiesEditability(document.querySelectorAll(".editable-record-property"), force="on")
+    } catch (error) {
+        console.log(`editIconClickHandler | ${error}`)
+    }
 
     target.removeEventListener("click", activateEditSection)
     target.addEventListener("click", trashIconClickHandler)
@@ -57,12 +63,18 @@ function activateEditSection(event) {
     toggleSectionVisibility(document.querySelector(".edit-notice "), force="show")
 
     // activate button functionality
-    // activateConfirmButton()
+    activateUpdateButton()
     activateDeleteButton()
     activateCancelButton()
 }
 
-function deactivateEditSection(event) {
+async function deactivateEditSection(event) {
+    try {
+        await togglePropertiesEditability(document.querySelectorAll(".editable-record-property"), force="off")
+    } catch (error) {
+        console.log(`editIconClickHandler | ${error}`)
+    }
+
     // ??? --> edit
     toggleEditTrashIcon(document.querySelector(".item-icon-button-container i.fa-regular"), force="edit")
 
@@ -70,7 +82,7 @@ function deactivateEditSection(event) {
     toggleSectionVisibility(document.querySelector(".confirm-section"), force="hide")
 
     // Delete --> Confirm
-    toggleSectionVisibility(document.querySelector(".confirm-container"), force="show")
+    toggleSectionVisibility(document.querySelector(".update-container"), force="show")
     toggleSectionVisibility(document.querySelector(".delete-container"), force="hide")
 
     // hide all notices
@@ -86,14 +98,20 @@ function deactivateEditSection(event) {
 }
 
 
-function editIconClickHandler(event) {
+async function editIconClickHandler(event) {
+    try {
+        await togglePropertiesEditability(document.querySelectorAll(".editable-record-property"), force="on")
+    } catch (error) {
+        console.log(`editIconClickHandler | ${error}`)
+    }
+
     const target = event.target.closest(".item-icon-button-container")
 
     // edit --> trash
     toggleEditTrashIcon(document.querySelector(".item-icon-button-container i.fa-regular"), force="trash")
 
     // Delete --> Confirm (if necessary)
-    toggleSectionVisibility(document.querySelector(".confirm-container"), force="show")
+    toggleSectionVisibility(document.querySelector(".update-container"), force="show")
     toggleSectionVisibility(document.querySelector(".delete-container"), force="hide")
 
     // show appropriate notice
@@ -106,7 +124,13 @@ function editIconClickHandler(event) {
 }
 
 
-function trashIconClickHandler(event) {
+async function trashIconClickHandler(event) {
+    try {
+        await togglePropertiesEditability(document.querySelectorAll(".editable-record-property"), force="off")
+    } catch (error) {
+        console.log(`editIconClickHandler | ${error}`)
+    }
+
     const target = event.target.closest(".item-icon-button-container")
 
     // trash --> edit
@@ -114,7 +138,7 @@ function trashIconClickHandler(event) {
 
     // Confirm --> Delete (if necessary)
     toggleSectionVisibility(document.querySelector(".delete-container"), force="show")
-    toggleSectionVisibility(document.querySelector(".confirm-container"), force="hide")
+    toggleSectionVisibility(document.querySelector(".update-container"), force="hide")
 
     // show appropriate notice
     toggleSectionVisibility(document.querySelector(".delete-notice"), force="show")
@@ -125,34 +149,73 @@ function trashIconClickHandler(event) {
     target.addEventListener("click", editIconClickHandler)
 }
 
+function activateUpdateButton() {
+    document.querySelector(".button-container .button-update").addEventListener("click", updateButtonClickHandler)
+}
+
 function activateDeleteButton() {
-    document.querySelector(".button-container .button-delete").addEventListener("click", deleteButtonHandler)
+    document.querySelector(".button-container .button-delete").addEventListener("click", deleteButtonClickHandler)
 }
 
 function activateCancelButton() {
-    document.querySelector(".button-container .button-cancel").addEventListener("click", deactivateEditSection)
+    document.querySelector(".button-container .button-cancel").addEventListener("click", cancelButtonClickHandler)
 }
 
 
-async function deleteButtonHandler(event) {
-    console.log("Deleted!")
+async function updateButtonClickHandler(event) {
+    console.log("Entered updateButtonClickHandler.")
 
     const itemSectionContainer = event.target.closest("[data-id]")
     const recordId = itemSectionContainer.dataset.id
     const csrfToken = itemSectionContainer.dataset.token
 
-    console.log(`recordId: ${recordId}`)
-    console.log(`csrfToken: ${csrfToken}`)
+    const updateData = {}
 
-    await deleteIngredient(recordId, csrfToken)
+    for (let inputElement of document.querySelectorAll(".editability-active")) {
+        let validated = true
 
-    // deactivateEditSection(event)
+        const property = inputElement.dataset.prop
+        const inputType = inputElement.dataset.inputtype
+
+        let selectedValue
+
+        if (inputType == "text") {
+            selectedValue = inputElement.querySelector("input").value
+        } else if (inputType == "select") {
+            selectedValue = inputElement.querySelector(`#${property}-input`).value
+        } else {
+            validated = false
+        }
+
+        updateData[property] = selectedValue
+    }
+
+    console.log(updateData)
+
+    try {
+        await updateIngredient(recordId, updateData, csrfToken)
+    } catch(error) {
+        console.log(`updateButtonClickHandler | ${error}`)
+
+        return
+    }
 
     location.reload(true)
 }
 
-function cancelButtonHandler(event) {
-    deactivateEditSection(event)
+
+async function deleteButtonClickHandler(event) {
+    const itemSectionContainer = event.target.closest("[data-id]")
+    const recordId = itemSectionContainer.dataset.id
+    const csrfToken = itemSectionContainer.dataset.token
+
+    await deleteIngredient(recordId, csrfToken)
+
+    location.reload(true)
+}
+
+async function cancelButtonClickHandler(event) {
+    await deactivateEditSection(event)
 }
 
 
@@ -213,29 +276,14 @@ async function autocompleteTextInputUpdateHandler(e) {
     }
 }
 
-// async function deleteConfirmButtonClickHandler(e) {
-//     const recordElement = e.target.closest(".list-item-delete")
-//     const recordId = recordElement.dataset.id
 
-//     const list = recordElement.closest(".list-section")
-//     const csrftoken = list.dataset.token
-
-//     const deleteRecordResponse = await deleteIngredient(recordId, csrftoken)
-
-//     if (deleteRecordResponse.success) {
-//         removeElementFromListOnPage("list-ingredients-container", recordId)
-//     }
-
-//     return deleteRecordResponse
-// }
-
-async function queryIngredientNames(searchTerm, csrftoken=null) {
+async function queryIngredientNames(searchTerm, csrfToken=null) {
     const url = `/pantry/food_substitutes/search`
 
     const response = {}
 
-    if (csrftoken == null) {
-        response.message = "queryFoodSubstitutes | Please provide a csrftoken."
+    if (csrfToken == null) {
+        response.message = "queryFoodSubstitutes | Please provide a csrfToken."
         console.log(response.message)
 
         return response
@@ -246,7 +294,7 @@ async function queryIngredientNames(searchTerm, csrftoken=null) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken
+                "X-CSRFToken": csrfToken
             },
             body: JSON.stringify({
                 search_term: searchTerm
@@ -254,7 +302,7 @@ async function queryIngredientNames(searchTerm, csrftoken=null) {
         })
     
         if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`)
+            console.log(`queryIngredientNames | Error: ${response.status}`)
         }
   
         const json = await response.json()
@@ -272,19 +320,16 @@ async function queryIngredientNames(searchTerm, csrftoken=null) {
     }
 }
 
-async function deleteIngredient(recordId, csrftoken=null) {
-    const url = "/pantry/ingredients/delete"
+async function updateIngredient(recordId, updateData, csrfToken=null) {
+    const url = "/pantry/ingredients/update"
 
     const response = {}
 
-    if (csrftoken == null) {
-        response.message = "deleteRecord | Please provide a csrftoken."
+    if (csrfToken == null) {
         console.log(response.message)
 
-        return response
+        throw Error(response.message)
     }
-
-    // console.log(`Calling ${url} with ingredient_id ${recordId}`)
 
     try {
         const response = await fetch(
@@ -293,7 +338,56 @@ async function deleteIngredient(recordId, csrftoken=null) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRFToken": csrftoken
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({
+                    record_id: recordId,
+                    update_data: updateData
+                })
+            })
+
+        if (!response.ok) {
+            console.log(`updateIngredient | Response error: ${response.status}`)
+        }
+  
+        const json = await response.json()
+
+        response.success = true
+        response.data = json
+
+        console.log(`Response:`)
+        console.log(response)
+
+        return response
+
+    } catch (error) {
+        response.message = error.message
+        console.error(error.message)
+
+        return response
+    }
+}
+
+async function deleteIngredient(recordId, csrfToken=null) {
+    const url = "/pantry/ingredients/delete"
+
+    const response = {}
+
+    if (csrfToken == null) {
+        response.message = "deleteRecord | Please provide a csrfToken."
+        console.log(response.message)
+
+        return response
+    }
+
+    try {
+        const response = await fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
                 },
                 body: JSON.stringify({
                     record_id: recordId
@@ -301,7 +395,7 @@ async function deleteIngredient(recordId, csrftoken=null) {
             })
     
         if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`)
+            console.log(`deleteIngredient | Error: ${response.status}`)
         }
   
         const json = await response.json()

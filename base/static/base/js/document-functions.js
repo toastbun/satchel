@@ -1,4 +1,12 @@
+function getCsrfTokenFromPage() {
+    try {
+        return document.querySelector("[data-token]").dataset.token
+    } catch (error) {
+        console.log(`getCsrfTokenFromPage | Error: No element was found on the document with a "data-token" attribute.`)
 
+        return null
+    }
+}
 
 
 function toggleSectionVisibility(section=null, force=null) {
@@ -10,7 +18,7 @@ function toggleSectionVisibility(section=null, force=null) {
         const errorMessage = `Please provide an Element.`
         console.log(`toggleSectionVisibility | Error: ${errorMessage}`)
 
-        throw Error(errorMessage)
+        // throw Error(errorMessage)
     }
 
     const inactiveClassName = "section-inactive"
@@ -33,9 +41,106 @@ function toggleSectionVisibility(section=null, force=null) {
         const errorMessage = `Use force="show" or force="hide", not force="${force}".`
         console.log(`toggleSectionVisibility | Error: ${errorMessage}`)
 
-        throw Error(errorMessage)
+        // throw Error(errorMessage)
     }
 }
+
+
+async function togglePropertiesEditability(elementsList=null, force=null) {
+    /**
+     * Toggles a list of elements between "editable" and "non-editable".
+     * An "editable" element is a text field, dropdown, datepicker, etc.
+     * A "non-editable" field is strictly text or visual content without input.
+     * Force a state by using the force parameter (valid force parameters are "on" and "off").
+     */
+    console.log(`Entered togglePropertiesEditability | ${force} | ${force == "on" ? "PROPS SHOULD BE EDITABLE" : "PROPS SHOULD NOT BE EDITABLE"}`)
+
+    if (elementsList == null) {
+        const errorMessage = `Please provide a list of elements whose properties editability should be toggled.`
+        throw Error(`togglePropertiesEditability | Error: ${errorMessage}`)
+    }
+
+    elementsList = Array.from(elementsList)  // change to Array in order to use .some()
+
+    const csrfToken = getCsrfTokenFromPage()
+
+    nullValue = "---------"
+
+    if ((force == "on" && force != "off") || elementsList.every((element) => !element.classList.contains("editability-active"))) {
+        console.log("Making properties EDITABLE.")
+        // force is "on" OR no elements contain ".editability-active"
+        // off --> on
+
+        for (element of elementsList) {
+            // do stuff
+            const property = element.dataset.prop
+            const inputType = element.dataset.inputtype
+            const value = element.innerText
+
+            // <input type="text">
+            // select.options[select.selectedIndex].value
+
+            if (inputType == "text") {
+                element.innerText = null
+                element.innerHTML = `<input type="text" class="input" value="${value}" />`
+            } else if (inputType == "select") {
+                let data = []
+
+                if (property == "grocery_type") {
+                    response = await getGroceryTypes(true, csrfToken)
+                    data = response.data
+                } else if (property == "substitute_key") {
+                    response = await getFoodSubstitutes(true, csrfToken)
+                    data = response.data
+                }
+
+                 element.innerText = null
+
+                 let selectHTML = `<span class="select"><select id="${property}-input">`
+
+                 for (let selectValue of data) {
+                    selectHTML = `${selectHTML}<option value="${selectValue ? selectValue : null}" ${selectValue == value ? "selected" : ""}>${selectValue ? selectValue : nullValue}</option>`
+                 }
+
+                 element.innerHTML = `${selectHTML}</select></span>`
+            } else {
+                throw Error(`togglePropertiesEditability | Error: element for property ${property} does not have a valid inputtype data attribute: ${inputType}`)
+            }
+
+            element.classList.add("editability-active")
+        }
+    } else if ((force == "off" && force != "on") || elementsList.every((element) => element.classList.contains("editability-active"))) {
+        console.log("Making properties NON-EDITABLE.")
+        // force is "off" or all elements contain ".editability-active"
+        // on --> off
+        for (element of elementsList) {
+            console.log(element)
+            // do stuff
+            const property = element.dataset.prop
+            const inputType = element.dataset.inputtype
+            const value = element.innerText
+
+            console.log(`property: ${property}`)
+            console.log(`inputType: ${inputType}`)
+            console.log(`value: ${value}`)
+
+            if (inputType == "text") {
+                element.innerText = element.querySelector("input").value
+            } else if (inputType == "select") {
+                // console.log(element)
+                const selectedValue = element.querySelector(".select select").value
+                element.innerText = selectedValue == "null" ? "N/A" : selectedValue
+            } else {
+                throw Error(`togglePropertiesEditability | Error: element for property ${property} does not have a valid inputtype data attribute: ${inputType}`)
+            }
+
+            element.classList.remove("editability-active")
+        }
+    } else {
+        throw Error("UH OHHHHH FIGURE DIS OUT")
+    }
+}
+
 
 
 function toggleEditTrashIcon(icon=null, force=null) {
@@ -47,7 +152,7 @@ function toggleEditTrashIcon(icon=null, force=null) {
         const errorMessage = `Please provide an icon Element.`
         console.log(`toggleEditTrashIcon | Error: ${errorMessage}`)
 
-        throw Error(errorMessage)
+        // throw Error(errorMessage)
     }
 
     const editClassName = "fa-pen-to-square"
@@ -66,7 +171,7 @@ function toggleEditTrashIcon(icon=null, force=null) {
             const errorMessage = `Use force="edit" or force="trash", not force="${force}".`
             console.log(`toggleEditTrashIcon | Error: ${errorMessage}`)
     
-            throw Error(errorMessage)
+            // throw Error(errorMessage)
         }
     }
 }

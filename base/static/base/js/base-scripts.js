@@ -6,16 +6,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
 })
 
-function getCsrfTokenFromPage() {
-    try {
-        return document.querySelector("[data-token]").dataset.token
-    } catch (error) {
-        console.log(`getCsrfTokenFromPage | Error: No element was found on the document with a "data-token" attribute.`)
-
-        return null
-    }
-}
-
 async function themeToggleButtonClickHandler(event) {
     const url = "/switch_theme"
 

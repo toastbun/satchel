@@ -10,7 +10,7 @@
     <div class="item-container" data-id="{{ ingredient.id }}" data-token="{{ csrf_token }}">
         <div class="label item-label">
             <div class="label-section label-section-left label-section-name">
-                <div class="name-container">{{ ingredient }}</div>
+                <div class="name-container editable-record-property" data-prop="name" data-inputtype="text">{{ ingredient }}</div>
             </div>
             <div class="label-section label-section-right item-icon-button-container">
                 <i class="fa-regular fa-pen-to-square"></i>
@@ -26,27 +26,37 @@
             <div class="description-item">
                 <div class="description-name">Grocery type:</div>
                 <div class="description-value">
-                    <a href="#">{{ ingredient.grocery_type.name }}</a>
+                    <a href="#">
+                        <div class="editable-record-property" data-prop="grocery_type" data-inputtype="select">{{ ingredient.grocery_type.name }}</div>
+                    </a>
                 </div>
             </div>
-            {% if ingredient.substitute_key.name %}
+            {% comment %}<!-- {% if ingredient.substitute_key.name %} -->{% endcomment %}
             <div class="description-item">
                 <div class="description-name">Substitute key:</div>
                 <div class="description-value">
-                    <a href="#">{{ ingredient.substitute_key.name }}</a>
+                    {% if ingredient.substitute_key %}<a href="#">{% endif %}
+                        <div class="editable-record-property" data-prop="substitute_key" data-inputtype="select">
+                            {% if ingredient.substitute_key %}
+                            {{ ingredient.substitute_key.name }}
+                            {% else %}
+                            N/A
+                            {% endif %}
+                        </div>
+                        {% if ingredient.substitute_key %}</a>{% endif %}
                 </div>
             </div>
-            {% endif %}
+            {% comment %}<!-- {% endif %} -->{% endcomment %}
         </div>
         <div class="confirm-section section-inactive">
-            <div class="button-container button-confirm-container confirm-container">
-                <button class="button button-confirm is-success">Confirm</button>
+            <div class="button-container button-confirm-container update-container">
+                <button class="button button-confirm button-update is-success">Update</button>
             </div>
             <div class="button-container button-confirm-container delete-container section-inactive">
-                <button class="button button-delete is-danger">Delete</button>
+                <button class="button button-confirm button-delete is-danger">Delete</button>
             </div>
             <div class="button-container button-confirm-container cancel-container">
-                <button class="button button-cancel">Cancel</button>
+                <button class="button button-confirm button-cancel">Cancel</button>
             </div>
         </div>
     </div>
