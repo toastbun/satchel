@@ -18,7 +18,7 @@ urlpatterns = [
     path("ingredients/get_food_substitutes", views.get_food_substitutes, name="get_food_substitutes"),
 
     path("food_items", views.food_items, name="food_items"),
-    path("food_items/<int:item_id>/", views.show_food_item, name="show_food_item"),
+    path("food_items/<int:food_item_id>/", views.show_food_item, name="show_food_item"),
     # path("food_items/search", views.search_food_items, name="search_food_items"),
     path("food_items/add", views.add_food_item, name="add_food_item"),
     # path("food_items/delete", views.delete_food_item, name="delete_food_item"),

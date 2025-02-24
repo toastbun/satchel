@@ -8,29 +8,41 @@
     <div class="list-container list-ingredients-container">
         <div class="label list-label list-label-ingredients">All ingredients<a href="{% url 'pantry:add_ingredient' %}">Add</a></div>
         <table class="table list-table list-ingredients-table">
+            <thead>
+                <tr class="list-item-container">
+                    <th class="list-item-cell left"><abbr title="Name">Name</abbr></th>
+                    <th class="list-item-cell"><abbr title="Grocery Type"><div class="table-cell-centered">Grocery type</div></abbr></th>
+                    {% comment %}
+                    <th class="list-item-cell center"><abbr title="Food Substitute Key"><div class="table-cell-centered">Food substitute</div></abbr></th>
+                    {% endcomment %}
+                </tr>
+            </thead>
             {% if ingredients_list %}
+            <tbody>
             {% for ingredient in ingredients_list %}
             <tr class="list-item-container">
                 <td class="list-item-cell list-item-name list-ingredients-item">
                     <a href="{% url 'pantry:show_ingredient' ingredient.id %}">
-                        <div class="name-container">{{ ingredient }}</div>
+                        <div class="list-item-cell left">{{ ingredient }}</div>
                     </a>
                 </td>
 
-                {% comment %}
                 <td class="list-item-cell list-item-icon">
-                    {% if ingredient.temperature_controlled %}<i class="fa-solid fa-temperature-low"></i>{% endif %}
+                    {{ ingredient.grocery_type }}
                 </td>
-                {% endcomment %}
 
                 {% comment %}
-                <td class="list-item-cell list-item-delete list-ingredients-item-delete {% if theme == 'dark' %}dark{% else %}light{% endif %}"
-                    data-id="{{ ingredient.id }}">
-                    <button class="delete"></button>
+                <td class="list-item-cell center list-item-icon">
+                    {% if ingredient.substitute_key %}
+                        {{ ingredient.substitute_key }}
+                    {% else %}
+                        N/A
+                    {% endif %}
                 </td>
                 {% endcomment %}
             </tr>
             {% endfor %}
+            </tbody>
             {% else %}
             <div class="notice list-notice">There are no ingredients in the database.</div>
             {% endif %}

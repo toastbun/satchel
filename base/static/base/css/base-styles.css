@@ -212,16 +212,23 @@ div {
 .list-item-cell {
     width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
     padding: 10px 12px;
+}
+
+.list-item-cell.center {
+    justify-content: center;
+    text-align: center;
 }
 
 .list-item-name {
     justify-content: flex-start;
 }
 
-.name-container {
+.list-item-cell.left {
     display: flex;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     word-break: break-all;

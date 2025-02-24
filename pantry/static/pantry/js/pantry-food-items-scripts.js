@@ -25,17 +25,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
  * 
  **/
 
-function getCsrfTokenFromForm(formElement) {
-    return formElement.closest("form").querySelector("[name='csrfmiddlewaretoken']").value
-}
-
-
 function getAssociatedDropdown(formElement) {
     return formElement.closest("form").querySelector(`#${formElement.name}-dropdown`)
 }
 
 async function autocompleteTextInputUpdateHandler(event) {
-    const csrfToken = getCsrfTokenFromForm(event.target)
+    const csrfToken = getCsrfTokenFromPage()
     const ingredientNames = await queryIngredientNames(event.target.value, csrfToken)
     const dropdown = getAssociatedDropdown(event.target)
 

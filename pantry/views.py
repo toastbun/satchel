@@ -75,9 +75,6 @@ def get_food_substitutes(request):
 
     food_substitutes = get_all_food_substitutes(names=names_only)
 
-    print(f"FOOD_SUBSTITUTES:")
-    print(food_substitutes)
-
     return HttpResponse(json.dumps(food_substitutes))
 
 
@@ -171,11 +168,6 @@ def update_ingredient(request):
     
     request_body = json.loads(request.body)
 
-    print("\n")
-    print(f"REQUEST:")
-    print(request_body)
-    print("\n")
-
     ingredient_id = request_body.get("record_id")
     update_data = request_body.get("update_data")
 
@@ -192,10 +184,6 @@ def update_ingredient(request):
     ingredient = get_object_or_404(Ingredient, pk=ingredient_id)
 
     for property, value in update_data.items():
-        print(f"{property} before update: {getattr(ingredient, property)}")
-
-        print(f"Value: {value} | Type: {type(value)}")
-
         if value == None or value == "null":
             setattr(ingredient, property, None)
 
@@ -210,13 +198,6 @@ def update_ingredient(request):
                 setattr(ingredient, property, value)
 
         ingredient.save()
-
-    print(f"UPDATED NAME TO: {ingredient.name}")
-    print(f"UPDATED GROCERY TYPE TO: {ingredient.grocery_type}")
-    print(f"UPDATED SUBSTITUTE KEY TO: {ingredient.substitute_key}")
-    
-    print(f"WOOOOO!!!!\n")
-    print(response)
 
     return HttpResponse(json.dumps(response))
 

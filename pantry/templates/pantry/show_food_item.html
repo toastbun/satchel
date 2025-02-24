@@ -6,4 +6,9 @@
 
 {% block content %}
     <div class="label">{{ item }}</div>
-{% endblock %}
+{% endblock content %}
+
+{% block pantry_scripts %}
+<script src="{% static 'pantry/js/pantry-food-items-scripts.js' %}"></script>
+<script src="{% static 'pantry/js/pantry-scripts.js' %}"></script>
+{% endblock pantry_scripts %}

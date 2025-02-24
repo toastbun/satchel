@@ -1,10 +1,6 @@
 document.addEventListener("DOMContentLoaded", (event) => {
     console.log("Loaded pantry-ingredients-scripts.js")
 
-    // for (let deleteButton of document.querySelectorAll(".list-item-delete")) {
-    //     deleteButton.addEventListener("click", deleteButtonClickHandler)
-    // }
-
     for (let textInputFieldWithAutocomplete of document.querySelectorAll(".autocomplete")) {
         textInputFieldWithAutocomplete.addEventListener("input", autocompleteTextInputUpdateHandler)
     }
@@ -25,9 +21,6 @@ let initialPropertyValues = {}
  * 
  **/
 
-function getCsrfTokenFromForm(formElement) {
-    return formElement.closest("form").querySelector("[name='csrfmiddlewaretoken']").value
-}
 
 function getAssociatedDropdown(formElement) {
     return formElement.closest("form").querySelector(`#${formElement.name}-dropdown`)
@@ -240,7 +233,7 @@ async function cancelButtonClickHandler(event) {
 
 
 async function autocompleteTextInputUpdateHandler(e) {
-    const csrfToken = getCsrfTokenFromForm(e.target)
+    const csrfToken = getCsrfTokenFromPage()
     const foodSubstitutes = await queryIngredientNames(e.target.value, csrfToken)
     const dropdown = getAssociatedDropdown(e.target)
 
