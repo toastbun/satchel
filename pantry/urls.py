@@ -22,4 +22,7 @@ urlpatterns = [
     # path("food_items/search", views.search_food_items, name="search_food_items"),
     path("food_items/add", views.add_food_item, name="add_food_item"),
     # path("food_items/delete", views.delete_food_item, name="delete_food_item"),
+
+    path(f"grocery_list", views.grocery_list, name="grocery_list"),
+    path(f"grocery_list/add", views.add_grocery_list_item, name="add_grocery_list_item")
 ]

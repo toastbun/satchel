@@ -1,0 +1,20 @@
+{% extends 'pantry/index.html' %}
+{% load static %}
+{% load bulma_tags %}
+
+{% block pantry_content %}
+
+<div class="page-section list-section list-grocery-list-section" data-token="{{ csrf_token }}">
+    <div class="list-container list-grocery-list-container">
+        <div class="label list-label list-label-grocery-list">Grocery list<a href="{% url 'pantry:add_grocery_list_item' %}">Add</a></div>
+    </div>
+
+</div>
+
+{% endblock pantry_content %}
+
+
+{% block pantry_scripts %}
+<script src="{% static 'pantry/js/pantry-scripts.js' %}"></script>
+<script src="{% static 'pantry/js/pantry-grocery-list-scripts.js' %}"></script>
+{% endblock pantry_scripts %}
