@@ -6,16 +6,15 @@
             <!-- <img class="navbar-logo" src="{% if dark_mode == True %}{% static 'base/images/satchel-logo-dark.png' %}{% else %}{% static 'base/images/satchel-logo-light.png' %}{% endif %}" /> -->
             <div class="navbar-logo">satchel</div>
         </a>
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-basic">
+        <a role="button" class="navbar-burger navbar-toggle-button {% if navbar_is_active %}is-active{% else %}{% endif %}" aria-label="menu" aria-expanded="false" data-target="navbar-basic">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
         </a>
-
     </div>
 
-    <div id="navbar-basic" class="navbar-menu">
+    <div id="navbar-basic" class="navbar-menu {% if navbar_is_active %}is-active{% else %}{% endif %}">
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link unselectable">
                     pantry

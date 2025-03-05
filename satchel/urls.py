@@ -23,5 +23,6 @@ urlpatterns = [
     path("", include("base.urls")),
     path("pantry/", include("pantry.urls")),
     path("admin/", admin.site.urls),
-    path("switch_theme", switch_theme, name="switch_theme")
+    path("switch_theme", switch_theme, name="switch_theme"),
+    path("toggle_navbar", toggle_navbar, name="toggle_navbar")
 ]
